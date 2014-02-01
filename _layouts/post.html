@@ -1,0 +1,45 @@
+---
+layout: default
+---
+ 
+<h2>
+	<a href="{{ page.url }}" title="[Permalink] {{ page.title }}">{{ page.title }}</a>
+</h2>
+<div class="post_date">{{ page.date | date_to_long_string }}</div>
+
+{{ content }}
+
+<div class="previous_next_post">
+
+  {% if page.previous %}
+    <p>
+      <strong>Previous Entry:</strong>
+      <a href="{{ page.previous.url }}" title="{{ page.previous.title }}">{{ page.previous.title }}</a>
+    </p>
+  {% endif %}
+
+  {% if page.next %}
+    <p>
+      <strong>Next Entry:</strong>
+      <a href="{{ page.next.url }}" title="{{ page.next.title }}">{{ page.next.title }}</a>
+    </p>
+  {% endif %}
+  
+  <div style="clear: both;"></div>
+  
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'inqlik';
+    var disqus_url = 'http://inqlik.gitgub.io{{ page.url }}';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>
+	<p><a href="http://inqlik.disqus.com/?url=ref">View the discussion thread.</a></p>
+</noscript>
