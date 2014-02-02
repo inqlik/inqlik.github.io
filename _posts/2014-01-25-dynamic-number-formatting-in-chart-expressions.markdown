@@ -40,7 +40,7 @@ Cell value 12.34% became 0.123398723123. Not good.
 
 We did our Google search on that problem and results where not so optimistic. Apparently behavior of dynamically formatted expressions on `Send to Excel` changes constantly. In the midst of year 2012 in QV11 expressions formatted by Num() function were [converted to Text][num_text] by the way to Excel, There was [some way][salesforce] to keep it in numbers, but otherwise unformatted. Now in QV11 SR4/5 that is default behavior out of the box. 
 
-Almost by accident we've found that formatting by Money() function is respected by `Send to Excel` as opposed to Num(). We did not use Money() much before as our usual set of number formats formats are Integer, Fixed to two decimals and Percent. Percent format pattern particularly did not look as good candidate to use in Money function but unexpectedly it worked. So strange expression formatter like
+Almost by accident we've found that formatting by Money() function is respected by `Send to Excel` as opposed to Num(). We did not use Money() much before as our usual set of number formats are Integer, Fixed to two decimals and Percent. Percent format pattern particularly did not look as good candidate to use in Money function but unexpectedly it worked. So strange expression formatter like
 
     Money($(vCurrentMonthSales)/$(vPreviousMonthSales),'# ##0,00%')
 
