@@ -47,7 +47,7 @@ Almost by accident we've found that formatting by Money() function is respected 
 works good both in application and after `Send to Excel`. Checked on QV11 SR4 and SR5.
 
 
-So for now we search/replaced all Num() to Money() in our variables file. Kind of happy end.
+So for now we search/replaced all Num() to Money() in our variables files. Kind of happy end.
 But is it right to do such tricks?
 
 So, our pros:
