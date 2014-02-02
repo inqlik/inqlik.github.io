@@ -23,7 +23,7 @@ So another approach would be to format expressions in-place. For example you hav
 
     Sum(Sales)
 
-Now you pre-formate your expression with (for example) 
+On `Number` tab your `Number Format Settings` set to default value - `Expression default`. You pre-formate your expression with (for example) 
 
     Money(Sum(Sales),'$# ##0,00;-$# ##0,00')
 
@@ -38,7 +38,7 @@ Our new Num() formatted expressions looked and acted in application as equals to
 
 Cell value 12.34% became 0.123398723123. Not good.
 
-We did our Google search on that problem and results where not so optimistic. Apparently behavior of dynamically formatted expressions on `Send to Excel` changes constantly. In the midst of year 2012 in QV11 expressions formatted by Num() function were [converted to Text][num_text] by the way to Excel, There was [some way][salesforce] to keep it in numbers, but otherwise unformatted. Now in QV11 SR4/5 that is default behavior out of the box. 
+We did our Google search on that problem and results where not so optimistic. Apparently behavior of dynamically formatted expressions on `Send to Excel` changes constantly. In the midst of year 2012 in QV11 expressions formatted by Num() function were [converted to Text][num_text] by the way to Excel, There was [some way][salesforce] to keep it in numbers, but otherwise unformatted. Now in QV11 SR4/5 that is default behavior out of the box - in Excel values arrive as unformatted numbers. 
 
 Almost by accident we've found that formatting by Money() function is respected by `Send to Excel` as opposed to Num(). We did not use Money() much before as our usual set of number formats are Integer, Fixed to two decimals and Percent. Percent format pattern particularly did not look as good candidate to use in Money function but unexpectedly it worked. So strange expression formatter like
 
@@ -46,6 +46,13 @@ Almost by accident we've found that formatting by Money() function is respected 
 
 works good both in application and after `Send to Excel`. Checked on QV11 SR4 and SR5.
 
+Look at example chart with some expression
+
+![Dynamic formatting in QlikView][example_qv]
+
+and how it looks in Excel
+
+![Sent to Excel][example_excel]
 
 So for now we search/replaced all Num() to Money() in our variables files. Kind of happy end.
 But is it right to do such tricks?
@@ -64,7 +71,11 @@ And cons:
 
 Anyway, for now we decided to stick to dynamic formatting. If bug-like feature helps us deliver better applications, so be it.
 
+Download [application used as example][app]
+
 [idea]: http://community.qlikview.com/ideas/1364
 [num_text]: http://community.qlikview.com/thread/53189
 [salesforce]: https://eu1.salesforce.com/articles/Basic/How-to-export-data-to-excel-as-number-in-version-11
-
+[example_qv]: /images/dynamic_formatting_qv.png
+[example_excel]: /images/dynamic_formatting_excel.png
+[app]: /downloads/send_to_excel_sample.qvw
