@@ -4,12 +4,11 @@ title: "Dynamic number formatting in chart expressions. Pros and cons"
 time: '23:12'
 ---
 
-First of all - a definition. QlikView charts properties dialog has a `Number` tab which we used to set formatting for each expression manually. That I will name static number formatting in this post.
+First of all - a definition. QlikView charts properties dialog has a `Number` tab where we are setting formats for each expression manually. That I will name static number formatting in this post.
 
-That tab on chart's properties dialog is interesting.
 Whole bunch of various controls together are helping user to set proper value to property `Format Pattern`. Importantly - `Format Pattern` can not be set by variable expression. So you can set `Background Color` or `Text Format` of chart expression by variable expression but not `Format Pattern`.
 
-It's rather not obvious why that should be, and apparently not only for me - because I found such [Idea][idea] 
+It's rather not obvious why that should be so, and apparently not only for me - because I found such [Idea][idea] 
 
 > ####Allow "Format Pattern" to use an expression
 >In many places you can use expressions to dynamically control QlikView. This should also be one of them.Especially when it comes to enterprise deployments with employees in multiple countries/cultures collaborating in one QV application a dynamic display is needed.Please email me for a detailed problem description / documentation if needed.
@@ -28,7 +27,7 @@ Now you pre-formate your expression with (for example)
 
     Money(Sum(Sales),'$# ##0,00;-$# ##0,00')
 
-That’s is what I will call dynamic formatting in chart expression. At first glance such technic is even better than using separate expression variable with `Format Pattern`. After all we do not have to manage additional variable. That approach handle more dynamic scenarios too. For example, if we should change format accordingly to selection made in field `Country`, we could add variable `vMoneyFormat` which dependent from that selection and change our expression for `Sales` to
+That is what I will call dynamic formatting in chart expression. At first glance such technic is even better than using separate expression variable with `Format Pattern`. After all we do not have to manage additional variable. That approach can easily handle even more dynamic scenarios. For example, if we have to change format accordingly to selection made in field `Country`, we could add variable `vMoneyFormat` which dependent from that selection and change our expression for `Sales` to
 
     Money(Sum(Sales),$(vMoneyFormat))
 
@@ -61,9 +60,9 @@ So, our pros:
 And cons:
 
 - We are relaying on undocumented feature, which looks almost like bug. Why on earth Num() formatting should be skipped, while Money() formatting should be respected in same procedure? What if QlikTech engineers will somehow fix Money() behavior so it would work only with format pattern that contain some currency symbol, or outright ban percent symbol in Money format pattern?
+- As yet we've found just one case of different behavior of static and dynamic formatting. No one can give a guarantee that there are no more such cases.
 
-
-Anyway, for now we decide to stick to dynamic formatting. If bug-like feature helps us deliver better applications, so be it.
+Anyway, for now we decided to stick to dynamic formatting. If bug-like feature helps us deliver better applications, so be it.
 
 [idea]: http://community.qlikview.com/ideas/1364
 [num_text]: http://community.qlikview.com/thread/53189
