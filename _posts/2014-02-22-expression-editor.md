@@ -3,7 +3,6 @@ layout: post
 title: "InQlik Expression Editor in QlikView Deployment Framework environment"
 time: '23:12'
 ---
-
 We've switched to QlikView Deployment Framework recently so adjusting our current toolset to new environment was a great opportunity to rethink some approaches and implement some properties in alternative way. In this article I'd like to present some background design considerations and current state of one of these tools - Expression Editor. 
 
 Expression Editor is a module in [InQlik Tools][tools] - free open-source package for Sublime Text editor.
@@ -24,7 +23,7 @@ So we sought and tried other tools: better editors for tabular data and so on. W
 - Ideally it should have a text format for best interoperability with VCS
 - Readability: Variables and expressions are first of all program code. They contain huge part of overall logic of end-user application. By old rule of the thumb any line of program code is read ten times more frequently then written or changed. 
 - Decent experience while writing code: Ideally you should have same sort of help as in Expression Editor within QlikView application
-- Metadata support. Any variable has a name. But variables in end-user QlikView application are mostly not simple variables. Frequently they represent an instance of a chart expression. Each of such an expression necessarily has to have at least `Label` and `Comment` for its visual representation in a chart. Some have `Background Color` and so on. It would be nice to have all these related properties stored together.
+- Metadata support. Any variable has a name. But variables in end-user QlikView application are mostly not simple variables. Frequenlty they represent an instance of a chart expression. Each of such an expression necessarily has to have at least `Label` and `Comment` for its visual representation in a chart. Some have `Background Color` and so on. It would be nice to have all these related properties stored together.
 - Should load to QlikView effectively
 
 
