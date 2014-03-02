@@ -1,15 +1,14 @@
---- 
-layout: post
+---
+layout: simple
 title: "InQlik Expression Editor in QlikView Deployment Framework environment"
-time: '23:12'
+permalink: /about_simple/
+---
+InQlik Expression Editor in QlikView Deployment Framework environment
 ---
 
 We've switched to QlikView Deployment Framework recently so adjusting our current toolset to new environment was a great opportunity to rethink some approaches and implement some properties in alternative way. In this article I'd like to present some background design considerations and current state of one of these tools - Expression Editor. 
 
-Expression Editor is a module in [InQlik Tools][tools] - free open-source package for Sublime Text editor.
-Sublime Text itself is not free. Its trial mode is absolutely full featured, but have some non disruptive but somewhat annoying nag screen once in ten or something save. And if you use it regularly in professional mode it is perfectly worth of its cost IMHO.
-
-Basically at the moment InQlik Tools consist of
+Expression Editor is a module in [InQlik Tools][tools], which is an open-source package for Sublime Text editor. Basically at the moment InQlik Tools consist of
 
 - Language syntax plugin for qvs script files
 - Integrated QVD metadata viewer
