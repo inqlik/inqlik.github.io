@@ -1,7 +1,8 @@
+baseurl: ""
 destination: ./_site
 lsi:         false
 port: 4000
-markdown:    maruku
+markdown: redcarpet
 encoding: utf-8
 permalink: /:year/:month/:title/
 pygments: false
