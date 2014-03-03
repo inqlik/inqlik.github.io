@@ -69,7 +69,7 @@ On that step you can see some characteristics of that technique.
 
 Just for sake of demonstration purpose I add `Sales.BackgroundColor` to `Sales` expression so on the whole it looks like
 
-```
+~~~
 
 ---
 SET: Sales
@@ -78,7 +78,7 @@ Label: Sales
 Comment: Sales amount for selected period
 BackgroundColor: =LightGreen(96)
 
-```
+~~~
 
 Next I use this variable for Sales chart expression both on Dashboard and Sales sheets of application. Now we've got nice uniformly greenish color for Sales across two charts.
 
@@ -89,23 +89,24 @@ Do not blame me, it is definitely not the working solution and most part of appl
 
 Lets save our CustomVariables file as CustomVariables_i18n and modify it:
 
-```
+~~~
 
 ---
 SET: AvgOrder
 Definition: Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
 Label: Avg order value
 Comment: Avg order value
-```
-changed to 
-```
+~~~
+changed to
+ 
+~~~
 
 ---
 SET: AvgOrder
 Definition: Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
 Label: =If($(russianNotSelected),'Avg order value','Средний чек')
 Comment: =If($(russianNotSelected),'Avg order value','Средний чек')
-```
+~~~
 
 ![Expression Editor 2][ee2]
 
