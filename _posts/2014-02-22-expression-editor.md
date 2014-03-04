@@ -209,11 +209,15 @@ To look at InQlik Expression Editor in action you should install [Sublime Text 3
 
 
 
-[^1]: I define Comment arbitrary when it is absent in original application. It's just a habit to have both Label and Comment for chart expression. Actually in that application Comments mostly not used in charts, but if I simply switch any box diagram into straight table for example - it would be nice to have them from the start. On the other hand simple variables not used as chart expression usually have only name (defined in LET or SET part of expression block) and definition.
+[^1]: 
+    I define Comment arbitrary when it is absent in original application. It's just a habit to have both Label and Comment for chart expression. Actually in that application Comments mostly not used in charts, but if I simply switch any box diagram into straight table for example - it would be nice to have them from the start. On the other hand simple variables not used as chart expression usually have only name (defined in LET or SET part of expression block) and definition.
 
-[^2]: In previous version of Expression Editor we used disconnected table for expressions metadata. So expressions labels used to look like $(GetLabel(AvgOrder)).
-Current solution (with clustered group of variables for each expression: `Sales`, `Sales.Label`, `Sales.Comment`, `Sales.TextColor` for example) was inspired by QlikView Deployment Framework. QlikView Deployment Framework has option to store Comments for variable in linked variable.
-That solution has already proved itself as a big improvement. First of all `=Sales.Label` looks slightly better then `$(GetLabel(Sales))`. But arguably more important part is: QlikView itself provide much more support in design time with this approach. In edit box for Label value for example, when you  start typing =Sale - you get possible completions, and immediately know if corresponding variable exists. If not - expression would be red underscored. Inside the $() you can write devil and all. No completions, and QlikView will indifferently color right thing and nonsense alike in dim gray. Such a difference matter a lot on the visualization phase. 
+[^2]: 
+    In previous version of Expression Editor we used disconnected table for expressions metadata. So expressions labels used to look like $(GetLabel(AvgOrder)).
+    
+    Current solution (with clustered group of variables for each expression: `Sales`, `Sales.Label`, `Sales.Comment`, `Sales.TextColor` for example) was inspired by QlikView Deployment Framework. QlikView Deployment Framework has option to store Comments for variable in linked variable.
+    
+    That solution has already proved itself as a big improvement. First of all `=Sales.Label` looks slightly better then `$(GetLabel(Sales))`. But arguably more important part is: QlikView itself provide much more support in design time with this approach. In edit box for Label value for example, when you  start typing =Sale - you get possible completions, and immediately know if corresponding variable exists. If not - expression would be red underscored. Inside the $() you can write devil and all. No completions, and QlikView will indifferently color right thing and nonsense alike in dim gray. Such a difference matter a lot on the visualization phase. 
 
 [^3]: There was some cheating - I created and hid listbox for language selection beforehand.   
 
