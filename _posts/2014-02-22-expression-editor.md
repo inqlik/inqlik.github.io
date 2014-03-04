@@ -3,10 +3,10 @@ layout: post
 title: "InQlik Expression Editor in QlikView Deployment Framework environment"
 time: '23:12'
 ---
-We've switched to QlikView Deployment Framework recently so adjusting our current toolset to new environment was a great opportunity to rethink some approaches and implement some properties in alternative way. In this article I'd like to present some background design considerations and current state of one of these tools - Expression Editor. 
+We've switched to QlikView Deployment Framework recently so adjusting our current toolset to new environment was a great opportunity to rethink some approaches and implement some properties in alternative way. In this post I'd like to present some background design considerations and current state of one of these tools - Expression Editor. 
 
-Expression Editor is a module in [InQlik Tools][tools] - free open-source package for Sublime Text editor.
-Sublime Text itself is not free. Its trial mode is absolutely full featured, but have some non disruptive but somewhat annoying nag screen once in ten or something save. And if you use it regularly in professional mode it is perfectly worth of its cost IMHO.
+Expression Editor is a module in [InQlik Tools][tools] - free open-source package for Sublime Text editor. Overview of Sublime Text itself you may find [here][rta]
+
 
 Basically at the moment InQlik Tools consist of
 
@@ -14,7 +14,7 @@ Basically at the moment InQlik Tools consist of
 - Integrated QVD metadata viewer
 - Expression Editor
 
-Other parts of InQlik Tools may be subject of another post. Lets look and Expression Editor.
+Other parts of InQlik Tools may be subject of another post. Lets look at Expression Editor.
 
 We started to use external storage for variables of our QlikView applications almost from start of our involvement with QlikView. I sincerely believe that any form of external maintenance is superior to direct editing of chart diagram expressions. So we started with external Excel files with variable expressions. It has feelings of *right thing to do in the long run* but sort of a impediment in the direct design process. And obviously while Excel files excel in some other aspects - as a target format for version control systems they are not very helpful.
 
@@ -145,8 +145,55 @@ Another setting is `output_mode`. By default Expression editor produce CSV file 
 
 Consider this mode as experimental - we tentatively choose CSV output format as a default for our projects so it is currently more tested
 
+###Macros
 
+There is well known bug/feature in QlikView dollar sign macro expansion: you can not pass parameter containing comma in it. There is known workaround- for example [that][wa]. 
+Basically you change your commas to something else in input parameters and then you replace that something with commas in target expression. It's good solution for some cases, but 
+sometimes that would not work. 
 
+Consider long multi-branched `if` expression that returns trendy icon based on input value
+
+~~~
+
+---
+set: ArrowIconForTrendValue
+definition: if($1 = 0 OR IsNull($1), null(), 'qmem://<builtin>/' & 
+  if($1 >= 1.20,'Arrow_N_G.png',
+  if($1 >= 1.051,'Arrow_NE_G.png',
+  if($1 >= 1.05 ,'Arrow_NE_G.png',
+  if($1 >= 1,'Arrow_E_Y.png',
+  if($1 >= .95 ,'Arrow_W_Y.png',
+  if($1 >= .801  ,'Arrow_SE_R.png',
+  if($1 >= .80 ,'Arrow_S_R.png',
+  if($1 >= 0 ,'Arrow_S_R.png','Arrow_S_R.png')))))))))
+~~~
+
+Firstly you hardly want to replace all $1's with $(=Replace('$1', ';', ',')) in that
+expression.
+
+Secondly - say you want use `$(Sales1998to1997)` as input parameter of that `ArrowIconForTrendValue` expression. You can't because `Sales1998to1997` is plain expression defined before as `$(Sales1998)/$(Sales1997)`. And `Sales1998` in it defined as `Sum(If(Year(OrderDate)=1998, Quantity*UnitPrice))` which is in fact contains comma in question. 
+
+So we not only should make our function expression (ArrowIconForTrendValue) less readable but also should make all parameters for that function anew - not using already existing expressions. That does not compose well.
+
+Enter the Expression Editor `macro`. Given `ArrowIconForTrendValue` and `Sales1998to1997` expressions above we can define new variable as 
+
+~~~
+
+---
+set: ArrowIconForSales1998to1997
+macro: ArrowIconForTrendValue
+  - $(Sales1998to1997)
+~~~   
+
+Macro tag get function expression name and YAML formatter list of parameters (in that example one parameter). Output format for that expression in CSV file would be:
+
+~~~
+SET ArrowIconForSalesTrend,"if($(Sales1998to1997) = 0 OR IsNull($(Sales1998to1997)), null(), 'qmem://<builtin>/' & if($(Sales1998to1997) >= 1.20,'Arrow_N_G.png', if($(Sales1998to1997) >= 1.051,'Arrow_NE_G.png', if($(Sales1998to1997) >= 1.05 ,'Arrow_NE_G.png', if($(Sales1998to1997) >= 1,'Arrow_E_Y.png', if($(Sales1998to1997) >= .95 ,'Arrow_W_Y.png', if($(Sales1998to1997) >= .801  ,'Arrow_SE_R.png', if($(Sales1998to1997) >= .80 ,'Arrow_S_R.png', if($(Sales1998to1997) >= 0 ,'Arrow_S_R.png','Arrow_S_R.png')))))))))",,
+~~~
+
+So on code-generation phase plugin would emulate dollar sign substitution of expression parameter with actual value, so QlikView would get clean expanded variable without any parameter, ready for further processing. I've included these sample expressions in demo project
+
+We do not use this feature frequently but when we do - it is nice to have.
 
 
 ###Using of demo project 
@@ -185,5 +232,6 @@ That solution has already proved itself as a big improvement. First of all `=Sal
 [ee3]: /images/expression-editor-3.png
 [ee4]: /images/expression-editor-4.png
 [ee5]: /images/expression-editor-5.png
-
+[rta]: http://www.linuxjournal.com/content/sublime-text-one-editor-rule-them-all
+[wa]: http://bi-review.blogspot.ru/2012/05/how-to-write-reusable-and-expandable.html
 
