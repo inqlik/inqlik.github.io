@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 
-I'm Vadim Tsushko, BI consultant at [InQlik][inqlik]
+I'm Vadim Tsushko, BI consultant and partner at [InQlik][inqlik]
 
 [inqlik]: http://www.inqlik.ru  
 
