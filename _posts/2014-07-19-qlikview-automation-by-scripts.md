@@ -25,12 +25,12 @@ In QlikView macros global variable `ActiveDocument` is entry point to automation
 
 In VBScript we initialize two automation objects for qlikview app and qlikview document.
 
-~~~Visual Basic
+```Visual Basic
 
 Set MyApp = CreateObject("QlikTech.QlikView")
 Set MyDoc = MyApp.OpenDoc ("C:\QlikViewApps\Demo.qvw","","")
 
-~~~
+```
 
 Note that you should use absolute path to QlikView document on `OpenDoc` parameter. That is mandatory.
 
