@@ -1,6 +1,6 @@
 --- 
 layout: post
-title: "Emulating cycle dimension group in Qlik Sense"
+title: "Emulating cyclic dimension group in Qlik Sense"
 time: '23:12'
 ---
 
@@ -29,4 +29,4 @@ In QlikView if I use dynamically changed dimension I would use dynamic label for
 - Title of table did not made its way to Excel when I tried `Export to Excel`. Actually in QlikView `Send to Excel` do not export chart's caption either. I'm usually do not use caption in QlikView charts but there we always can add dynamic context information into dimension/measure label
 
 
-[Download sample application](/downloads/CyclicGroupsEmulation.qvf) - you should place it at the directory c:\Users\\[User name]\Documents\Qlik\Sense\Apps to check it up.
+[Download sample application](/downloads/CyclicGroupsEmulation.qvf) - you should place it at the directory `c:\Users\[User name]\Documents\Qlik\Sense\Apps` to check it up.
