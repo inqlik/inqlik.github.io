@@ -4,17 +4,14 @@ title: "Emulating cyclic dimension group in Qlik Sense"
 time: '23:12'
 ---
 
-I've tried to emulate cyclic dimension group in Qlik Sense Desktop.
-For that I've:
+Current version of Qlik Sense Desktop do not support cyclic dimension groups (drilldown groups are supported).  
+In this post I illustrate how to emulate this functionality. This method does not employ extensions objects and so on. Basically it uses additionally loaded field in island table and macro expansion in chart dimension. Sample applicaiton is available.
 
-- created simple application with data model based on standard test script from QlikView
-- applied method with island dimension that we sometimes use in QlikView applications.
-
- Result looks like that (City dimension selected):
+ Result looks like that:
 
 ![Sales by cities](/images/qlik_sense_cyclic_group_1.png)
 
-and like that (Branch dimension selected) :
+and like that (another dimension selected):
 
 ![Sales by branches](/images/qlik_sense_cyclic_group_2.png)
 
