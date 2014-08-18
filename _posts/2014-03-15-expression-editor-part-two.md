@@ -47,6 +47,7 @@ LightGreen,,,,,LightRed(96)
 So in that output format each row contains name, definition, label, comment and some additional metadata. With that format added I think Expression Editor may be used in environments different
 from ours own.
 
+[InQlik Expression Editor in QlikView Deployment Framework environment](/2014/02/expression-editor/)
 
 [disc]: http://community.qlik.com/docs/DOC-6046
 [jason]: http://community.qlik.com/people/jason.michaelides

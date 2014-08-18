@@ -206,7 +206,7 @@ You can [download][sd] and look at materials used in this post. Demo project is 
 
 To look at InQlik Expression Editor in action you should install [Sublime Text 3][st3] and [InQlik Tools][tools]
  
-
+[InQlik Expression Editor, part two](/2014/03/expression-editor-part-two/)
 
 
 [^1]: 
