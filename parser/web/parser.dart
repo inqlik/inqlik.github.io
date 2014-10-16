@@ -14,15 +14,19 @@ void parseExpression(MouseEvent event) {
   var parser = qvs['start'].end();
   p.Result parseResult = new QvExpParser().guarded_parse(expressionText);
   String  resultText = 'Expression parsed successfully';
+  String textWithErrorMark = '';
   if (parseResult.isFailure) {
-    resultText = 'Error while parsing expression: ${parseResult.message} at position ${parseResult.position}';
+    textWithErrorMark = expressionText.substring(0,parseResult.position) + '▼' + expressionText.substring(parseResult.position);
+    resultText = '''Error while parsing expression: ${parseResult.message} at position ${parseResult.position}''';
   }
+  querySelector("#expression_with_mark").text = textWithErrorMark;
   querySelector("#result").text = resultText;
   dirty = false;
 }
 void invalidateResult(_) {
   if (!dirty) {
     querySelector("#result").text = '';
+    querySelector("#expression_with_mark").text = '';
     dirty = true;
   }  
 }
