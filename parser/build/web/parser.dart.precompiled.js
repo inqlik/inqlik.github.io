@@ -2973,7 +2973,7 @@ Iq:[function(){var z=J.Vg(document.querySelector("#parse_expression"))
 H.VM(new W.xC(0,z.J6,z.fA,W.VF(G.Yi()),z.el),[H.Kp(z,0)]).DN()
 z=J.q0(document.querySelector("#formula_text"))
 H.VM(new W.xC(0,z.J6,z.fA,W.VF(G.B4()),z.el),[H.Kp(z,0)]).DN()},"$0","eE",0,0,1],
-ca:[function(a){var z,y,x,w,v
+ca:[function(a){var z,y,x,w,v,u
 z=H.Go(document.querySelector("#formula_text"),"$isFB").value
 y=new N.Xp(!1,P.L5(null,null,null,null,null),P.L5(null,null,null,null,null),new E.kw("Uninitalized production: start"))
 y.eQ()
@@ -2983,10 +2983,14 @@ x=new N.Xp(!1,P.L5(null,null,null,null,null),P.L5(null,null,null,null,null),new 
 x.eQ()
 x.SL()
 w=x.E1(z)
-v=w.gEP()?"Error while parsing expression: "+H.d(w.gG1(w))+" at position "+H.d(w.bM):"Expression parsed successfully"
-document.querySelector("#result").textContent=v
+if(w.gEP()){x=w.bM
+v=J.rY(z).Nj(z,0,x)+"\u25bc"+C.xB.yn(z,x)
+u="Error while parsing expression: "+H.d(w.gG1(w))+" at position "+H.d(x)}else{u="Expression parsed successfully"
+v=""}document.querySelector("#expression_with_mark").textContent=v
+document.querySelector("#result").textContent=u
 $.wM=!1},"$1","Yi",2,0,6],
 w6:[function(a){if(!$.wM){document.querySelector("#result").textContent=""
+document.querySelector("#expression_with_mark").textContent=""
 $.wM=!0}},"$1","B4",2,0,7]},1],["","",,E,{
 "^":"",
 FW:function(a){var z,y
