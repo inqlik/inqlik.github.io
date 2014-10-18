@@ -10,7 +10,7 @@ layout: nil
  <updated>{{ site.time | date_to_xmlschema }}</updated>
  <id>http://inqlik.gitgub.io/</id>
  <author>
-   <name>Wolfgang König</name>
+   <name>Vadim Tsushko</name>
  </author>
  
  {% for post in site.posts limit:10 %}

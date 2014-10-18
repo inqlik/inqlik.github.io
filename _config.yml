@@ -5,8 +5,11 @@ port: 4000
 markdown: kramdown
 encoding: utf-8
 permalink: /:year/:month/:title/
-pygments: true
+pygments: false
 paginate: 1
+name: InQlik blog
+description: Blog about various aspects of QlikView development process 
+url: http://inqlik.github.io/
 maruku:
   use_tex:    false
   use_divs:   false
