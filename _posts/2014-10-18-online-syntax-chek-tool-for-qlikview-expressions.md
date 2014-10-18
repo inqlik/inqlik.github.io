@@ -1,6 +1,6 @@
 --- 
 layout: post
-title: "Online syntax check tool for QlikView expressions"
+title: "Online tool to check syntax of QlikView expressions"
 time: '23:12'
 ---
 
