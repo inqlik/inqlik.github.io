@@ -4,6 +4,10 @@ title: "Online syntax check tool for QlikView expressions"
 time: '23:12'
 ---
 
+TL;DR: Check our [on-line parser for QlikView expressions](/live/build/web/parser.html)
+
+----
+
 Currently in spare time I'm trying to add command line syntax check tool for qlikview chart expressions to ours team tool-box. We already use internally similar command line parser for qlikview load scripts. It definitely should be improved in future but already now (integrated in Sublime Text as Build system for qvs script) it provide some help in developing process. It is developed in dart programming language with sources available at [github repository](https://github.com/inqlik/qvs) for all interested in that kind of stuff. For the moment it completely lacks of documentation apart from set of unit-test and generally I think is ready only for our own internal usage.
 
 So I thought - why not make comparable tool for checking our qlikview expression files? (in our projects all qlikview expressions are stored in text files, same as load scripts).
