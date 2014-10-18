@@ -17,7 +17,7 @@ Well, it proved to be difficult to get from working parser for individual qlikvi
 
 So for now that tool is not ready even for internal usage, but I believe it eventually would develop into something useful.
 
-Meantime I've decided to take advantage of dual nature of dart language which works both in command line scripts and (compiled to javascript) at web pages. I can take a expression parser from the package and use it in simple web application.
+Meantime I've decided to take advantage of dual nature of dart language which works both in command line scripts and (compiled to javascript) at web pages. I can take a expression parser from the package and use it in simple web application. 
 
 Go [here](/live/build/web/parser.html) to see how it works.
 
@@ -30,3 +30,4 @@ Some additional considerations:
 - Apart from dollar sign expansion on-line syntax checker should not give false negative results for expressions of any complexity. If you entered valid expression and checker report error in it, please [add an issue](https://github.com/inqlik/qv_exp/issues) at repository or leave a comment here.
 - QlikView expression parser itself is at [its own repository](https://github.com/inqlik/qv_exp)
 - Source code for web application is at [inqlik blog repository](https://github.com/inqlik/inqlik.github.io/tree/master/live/web) 
+- Application itself is basically minimally adapted dart web hello world sample
