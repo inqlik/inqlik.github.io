@@ -25,11 +25,10 @@ In QlikView macros global variable `ActiveDocument` is entry point to automation
 
 In VBScript we initialize two automation objects for qlikview app and qlikview document.
 
-~~~
-
+<pre><code class="vbscript">
 Set MyApp = CreateObject("QlikTech.QlikView")
 Set MyDoc = MyApp.OpenDoc ("C:\QlikViewApps\Demo.qvw")
-~~~
+</code></pre>
 
 Note that you should use absolute path to QlikView document on `OpenDoc` parameter. That is mandatory.
 
@@ -40,7 +39,9 @@ Then use `MyDoc` instead of global variable `ActiveDocument` and `MyApp` instead
 For example that could be usefull to schedule warming up of your application after nightly reload.
 To automate application residing on the QlikView server you shoud use full path to your application on OpenDoc parameter. It could be something like:
 
-`Set MyDoc = MyApp.OpenDoc ("qvp://localhost/AppFolder/My application.qvw")`
+<pre><code class="vbscript">
+Set MyDoc = MyApp.OpenDoc ("qvp://localhost/AppFolder/My application.qvw")
+</code></pre>
 
 For me it works only with ActiveDirectory authentication. Basically if you can open application in QlikView Desktop with `Use NT Identity` radiobutton selected and user/login dialog do not appear on opening - automation from VBScript should work too.
 
@@ -52,15 +53,15 @@ It could be useful to collect common utility functions and classes (yes, VBScrip
 
 So if import-like functionality is truly necessary I would use simple one-line function `includeFile` like in this example where on top of our script we import code from `QvUtils.vbs`
 
-~~~
 
+<pre><code class="vbscript">
 Sub includeFile(ByVal fSpec)
     executeGlobal CreateObject("Scripting.FileSystemObject").openTextFile(fSpec).readAll()
 End Sub
 
 includeFile "QvUtils.vbs"
 ...
-~~~
+</code></pre>
 
 Below some simple samples for illustration:
 
@@ -70,7 +71,9 @@ Given simple test application:
 
 Script to export straight chart to excel file with different values selected in field `Year` 
 
-~~~
+
+
+<pre><code class="vbscript">
 
 set fso = CreateObject("Scripting.FileSystemObject")
 dim CurrentDirectory
@@ -90,13 +93,13 @@ for i=0 to yearValues.Count-1
 next
 doc.CloseDoc
 qv.Quit
-~~~
+</code></pre>
 
 Same script separated to utils mini-library and script proper:
 
 QvUtils.vbs:
 
-~~~
+<pre><code class="vbscript">
 
 function GetAbsolutePath(ByVal filePath)
   if Mid(filePath,2,1) = ":" OR Left(filePath,2) = "\\" then 'Absolute path in input parameter'
@@ -148,11 +151,11 @@ Class QlikView
     set mApp = Nothing
   end function
 End Class
-~~~
+</code></pre>
 
 GenerateReports.vbs:
 
-~~~
+<pre><code class="vbscript">
 
 Sub includeFile(ByVal fSpec)
     executeGlobal CreateObject("Scripting.FileSystemObject").openTextFile(fSpec).readAll()
@@ -174,7 +177,7 @@ with New QlikView
   .doc.CloseDoc
   .Quit
 end with
-~~~
+</code></pre>
 
 Script to disable most settings in Sheet Security dialog (can be run upon qvw before deployment)
 Target configuration is like this:
@@ -186,7 +189,7 @@ Use as in `cscript set_sheet_properties.vbs ..\App\AutomationTest.qvw`
 
 set_sheet_permissions.vbs
 
-~~~
+<pre><code class="vbscript">
 
 Sub includeFile(ByVal fSpec)
     executeGlobal CreateObject("Scripting.FileSystemObject").openTextFile(fSpec).readAll()
@@ -215,6 +218,6 @@ with New QlikView
   .doc.Save
   .Quit
 end with
-~~~
+</code></pre>
 
 [Download sample project](/downloads/QlikViewAutomationSample.zip)
