@@ -4,7 +4,7 @@
  <title>inqlik.gitgub.io</title>
  <link href="http://inqlik.gitgub.io/atom.xml" rel="self"/>
  <link href="http://inqlik.gitgub.io/"/>
- <updated>2014-10-18T19:25:03+06:00</updated>
+ <updated>2014-10-18T20:15:35+06:00</updated>
  <id>http://inqlik.gitgub.io/</id>
  <author>
    <name>Vadim Tsushko</name>
@@ -266,8 +266,7 @@ Use as in &lt;code&gt;cscript set_sheet_properties.vbs ..\App\AutomationTest.qvw
 
 &lt;p&gt;set_sheet_permissions.vbs&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
-
+&lt;pre&gt;&lt;code class=&quot;language-vbscript&quot;&gt;
 Sub includeFile(ByVal fSpec)
     executeGlobal CreateObject(&quot;Scripting.FileSystemObject&quot;).openTextFile(fSpec).readAll()
 End Sub
@@ -275,7 +274,7 @@ End Sub
 includeFile &quot;QvUtils.vbs&quot;
 
 if WScript.Arguments.Count &amp;lt;&amp;gt; 1 then
-    WScript.Echo &quot;Syntax is: cscript SetSheetPermissions.vbs &lt;qlikviewfilename&gt;&quot;
+    WScript.Echo &quot;Syntax is: cscript SetSheetPermissions.vbs &amp;lt;QlikViewFileName&amp;gt;&quot;
     WScript.Quit 1
 end if
 
@@ -295,10 +294,9 @@ with New QlikView
   .doc.Save
   .Quit
 end with
+&lt;/code&gt;&lt;/pre&gt;
 
-
-[Download sample project](/downloads/QlikViewAutomationSample.zip)
-&lt;/qlikviewfilename&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;/downloads/QlikViewAutomationSample.zip&quot;&gt;Download sample project&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  

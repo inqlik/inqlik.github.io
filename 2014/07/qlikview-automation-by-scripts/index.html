@@ -227,8 +227,7 @@ Use as in <code>cscript set_sheet_properties.vbs ..\App\AutomationTest.qvw</code
 
 <p>set_sheet_permissions.vbs</p>
 
-<pre><code class="vbscript">
-
+<pre><code class="language-vbscript">
 Sub includeFile(ByVal fSpec)
     executeGlobal CreateObject("Scripting.FileSystemObject").openTextFile(fSpec).readAll()
 End Sub
@@ -236,7 +235,7 @@ End Sub
 includeFile "QvUtils.vbs"
 
 if WScript.Arguments.Count &lt;&gt; 1 then
-    WScript.Echo "Syntax is: cscript SetSheetPermissions.vbs <qlikviewfilename>"
+    WScript.Echo "Syntax is: cscript SetSheetPermissions.vbs &lt;QlikViewFileName&gt;"
     WScript.Quit 1
 end if
 
@@ -256,10 +255,9 @@ with New QlikView
   .doc.Save
   .Quit
 end with
+</code></pre>
 
-
-[Download sample project](/downloads/QlikViewAutomationSample.zip)
-</qlikviewfilename></code></pre>
+<p><a href="/downloads/QlikViewAutomationSample.zip">Download sample project</a></p>
 
 
 <div class="previous_next_post">
