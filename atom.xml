@@ -4,7 +4,7 @@
  <title>inqlik.gitgub.io</title>
  <link href="http://inqlik.gitgub.io/atom.xml" rel="self"/>
  <link href="http://inqlik.gitgub.io/"/>
- <updated>2014-10-18T20:15:35+06:00</updated>
+ <updated>2014-10-19T00:49:04+06:00</updated>
  <id>http://inqlik.gitgub.io/</id>
  <author>
    <name>Vadim Tsushko</name>
@@ -37,7 +37,7 @@ Admittedly such a tool would require addition of sub-parser for Set analysis exp
 
 &lt;ul&gt;
   &lt;li&gt;That page works totally on the client side, parser and so on compiled to javascript.&lt;/li&gt;
-  &lt;li&gt;Page uses the excellent &lt;a href=&quot;http://www.qlikviewaddict.com/p/qlikview-web-highlight.html&quot;&gt;QlikView Web Syntax Highlighter&lt;/a&gt; to highlight expression syntax. (Actually it similar to how actual tool would be used at development. Sublime Text will provide syntax highlighting and qlikview expression parser would be used for syntax checking)&lt;/li&gt;
+  &lt;li&gt;Page uses the Matt Fryer’s &lt;a href=&quot;http://www.qlikviewaddict.com/p/qlikview-web-highlight.html&quot;&gt;QlikView Web Syntax Highlighter&lt;/a&gt; to highlight expression syntax. (Actually it similar to how actual tool would be used at development. Sublime Text will provide syntax highlighting and qlikview expression parser would be used for syntax checking)&lt;/li&gt;
   &lt;li&gt;Expressions can contain set analysis expression.&lt;/li&gt;
   &lt;li&gt;Dollar sign expansions are not supported.&lt;/li&gt;
   &lt;li&gt;Apart from dollar sign expansion on-line syntax checker should not give false negative results for expressions of any complexity. If you entered valid expression and checker report error in it, please &lt;a href=&quot;https://github.com/inqlik/qv_exp/issues&quot;&gt;add an issue&lt;/a&gt; at repository or leave a comment here.&lt;/li&gt;
