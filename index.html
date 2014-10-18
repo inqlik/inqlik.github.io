@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+		
+      <title>inqlik.gitgub.io</title>
+		
+    <link rel="stylesheet" href="/stylesheets/screen.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/stylesheets/syntax.css" type="text/css" media="all" />
+    <link rel="alternate" title="inqlik.gitgub.io" type="application/atom+xml" href="/atom.xml" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+		<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css' /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Viewport" content="maximum-scale=1.8,width=720" />
+    <link rel="stylesheet" href="/stylesheets/qlikview.css">
+    <script src="/stylesheets/highlight.pack.js"></script>
+    <script>
+     hljs.configure({tabReplace: '    '});
+      hljs.initHighlightingOnLoad();
+    </script>
+    <link href='http://inqlik.github.io/feed.xml' rel='alternate' type='application/atom+xml'>
+  </head>
+ 
+  <body>
+	
+    <div id="header">
+    	<h1>
+    		<a href="/" title="inqlik.gitgub.io">Inqlik blog</a>
+    	</h1>
+    </div>
+    <div id="navigation">
+    	<ul>
+    		<li><a href="/" title="Blog">Blog</a>&bull;</li> 
+    		<li><a href="/archive/" title="Archive of this Blog">Archive</a>&bull;</li>
+        <li><a href="/osp/" title="Open Source projects">Open Source</a>&bull;</li> 
+    		<li><a href="/about/" title="About this Blog">About</a></li>
+    	</ul>
+    </div>			
+
+    <div class="clear_both"></div>
+
+		
+
+  <h2><a href="/2014/10/online-syntax-chek-tool-for-qlikview-expressions/" title="[Permalink] Online tool to check syntax of QlikView expressions">Online tool to check syntax of QlikView expressions</a></h2>
+	<div class="post_date">18 October 2014</div>
+ 
+  <p>TL;DR: Check our <a href="/live/build/web/parser.html">on-line parser for QlikView expressions</a></p>
+
+<hr />
+
+<p>Currently in spare time I’m trying to add command line syntax check tool for qlikview chart expressions to ours team tool-box. We already use internally similar command line parser for qlikview load scripts. It definitely should be improved in future but already now (integrated in Sublime Text as Build system for qvs script) it provide some help in developing process. It is developed in dart programming language with sources available at <a href="https://github.com/inqlik/qvs">github repository</a> for all interested in that kind of stuff. For the moment it completely lacks of documentation apart from set of unit-test and generally I think is ready only for our own internal usage.</p>
+
+<p>So I thought - why not make comparable tool for checking our qlikview expression files? (in our projects all qlikview expressions are stored in text files, same as load scripts).
+Admittedly such a tool would require addition of sub-parser for Set analysis expressions but that should not be overwhelming task giving now I have some experience with other parsers (Actually that step is done now) </p>
+
+<p>Well, it proved to be difficult to get from working parser for individual qlikview expression to useful tool for analyzing real code-base of expressions. You should decide what to do with all sorts of dollar sign expansions within expressions for example. Or how to deal with variables that are not valid expressions and rather some arbitrary chunks of code only used through variable expansion in other expressions. And some automatic procedure for getting metadata from end-user application would be nice too. Tool may then check each terminal identifier in expression against list of loaded fields in application. And so on. </p>
+
+<p>So for now that tool is not ready even for internal usage, but I believe it eventually would develop into something useful.</p>
+
+<p>Meantime I’ve decided to take advantage of dual nature of dart language which works both in command line scripts and (compiled to javascript) at web pages. I can take a expression parser from the package and use it in simple web application. </p>
+
+<p>Go <a href="/live/build/web/parser.html">here</a> to see how it works.</p>
+
+<p>Some additional considerations:</p>
+
+<ul>
+  <li>That page works totally on the client side, parser and so on compiled to javascript.</li>
+  <li>Page uses the excellent <a href="http://www.qlikviewaddict.com/p/qlikview-web-highlight.html">QlikView Web Syntax Highlighter</a> to highlight expression syntax. (Actually it similar to how actual tool would be used at development. Sublime Text will provide syntax highlighting and qlikview expression parser would be used for syntax checking)</li>
+  <li>Expressions can contain set analysis expression.</li>
+  <li>Dollar sign expansions are not supported.</li>
+  <li>Apart from dollar sign expansion on-line syntax checker should not give false negative results for expressions of any complexity. If you entered valid expression and checker report error in it, please <a href="https://github.com/inqlik/qv_exp/issues">add an issue</a> at repository or leave a comment here.</li>
+  <li>QlikView expression parser itself is at <a href="https://github.com/inqlik/qv_exp">its own repository</a></li>
+  <li>Source code for web application is at <a href="https://github.com/inqlik/inqlik.github.io/tree/master/live/web">inqlik blog repository</a> </li>
+  <li>Application itself is basically minimally adapted dart web hello world sample</li>
+</ul>
+
+
+	<div class="comments">
+		<a href="/2014/10/online-syntax-chek-tool-for-qlikview-expressions/#disqus_thread" title="Show comments">Comments</a>
+	</div>
+ 
+  
+
+ 
+<div class="paginator">
+  
+  <div class="left_column">
+    
+      <a href="/page2/" title="Older entries">&laquo; older entries</a>
+    
+		&nbsp;
+  </div>
+  
+  <form action="http://www.google.com/search" id="search" method="get" class="search_column">
+  <fieldset>
+    <input class="text" name="q" type="text" />
+    <input name="sitesearch" type="hidden" value="inqlik.gitgub.io" />
+    <input class="button" type="submit" value="Search" />
+  </fieldset>
+</form>
+  
+  <div class="right_column">
+    
+		&nbsp;
+  </div>
+ 
+  <div class="clear_both">
+  </div>
+ 
+</div>
+		
+    <div id="footer">
+      Powered by <a href="http://github.com/mojombo/jekyll" title="Jekyll Site Generator">Jekyll</a> &amp; <a href="http://disqus.com/" title="Disqus Commenting System">Disqus</a>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-47706781-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </div>
+ 
+		<script type="text/javascript">
+		    var disqus_shortname = 'inqlik';
+
+		    (function () {
+		        var s = document.createElement('script'); s.async = true;
+		        s.type = 'text/javascript';
+		        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+		        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+		    }());
+		</script>
+		
+  </body>
+</html>

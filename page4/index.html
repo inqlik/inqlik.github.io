@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+		
+      <title>inqlik.gitgub.io</title>
+		
+    <link rel="stylesheet" href="/stylesheets/screen.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/stylesheets/syntax.css" type="text/css" media="all" />
+    <link rel="alternate" title="inqlik.gitgub.io" type="application/atom+xml" href="/atom.xml" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+		<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css' /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Viewport" content="maximum-scale=1.8,width=720" />
+    <link rel="stylesheet" href="/stylesheets/qlikview.css">
+    <script src="/stylesheets/highlight.pack.js"></script>
+    <script>
+     hljs.configure({tabReplace: '    '});
+      hljs.initHighlightingOnLoad();
+    </script>
+    <link href='http://inqlik.github.io/feed.xml' rel='alternate' type='application/atom+xml'>
+  </head>
+ 
+  <body>
+	
+    <div id="header">
+    	<h1>
+    		<a href="/" title="inqlik.gitgub.io">Inqlik blog</a>
+    	</h1>
+    </div>
+    <div id="navigation">
+    	<ul>
+    		<li><a href="/" title="Blog">Blog</a>&bull;</li> 
+    		<li><a href="/archive/" title="Archive of this Blog">Archive</a>&bull;</li>
+        <li><a href="/osp/" title="Open Source projects">Open Source</a>&bull;</li> 
+    		<li><a href="/about/" title="About this Blog">About</a></li>
+    	</ul>
+    </div>			
+
+    <div class="clear_both"></div>
+
+		
+
+  <h2><a href="/2014/03/expression-editor-part-two/" title="[Permalink] InQlik Expression Editor, part two">InQlik Expression Editor, part two</a></h2>
+	<div class="post_date">15 March 2014</div>
+ 
+  <p>After writing previous post I have <a href="http://community.qlik.com/docs/DOC-6046">very interesting discussion</a> with <a href="http://community.qlik.com/people/jason.michaelides">Jason Michaelides</a>.</p>
+
+<p>Jason raised perfectly valid question about performance considerations of using <code>=</code> sign in variable definition. In my example I use it with dynamic labels and comments. Actually I never used sort of internalization similar to my sample and almost all labels and comments in our applications are pretty static. So after some thought and some unsuccessful attempts to make it work differently I gave up. Approach in my example is pretty and uniform but now I think I would still use it only for couple or at most dozen of labels for entire application. In case I would need actual internalization where all labels and comments should be 100% dynamic I would probably prefer variable definition without <code>=</code> sign with consecutive dollar sign expansion in chart expression’s labels and comments.
+So for AvgOrder in Expression editor it would be like: </p>
+
+<pre><code>
+---
+SET: AvgOrder
+Definition: Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
+Label: If($(russianNotSelected),'Avg order value','Средний чек')
+Comment: If($(russianNotSelected),'Avg order value','Средний чек')
+</code></pre>
+
+<p>And in chart expression Label would be set to <code>=$(AvgOrder.Label)</code> and Comment to <code>=$(AvgOrder.Comment)</code>
+Looks slightly worse for my eyes but it probably worth it.</p>
+
+<p>Another interesting point in Jason’s article and consecutive conversation was Jason’s overall approach to application modeling. </p>
+
+<p>I think most frequently used technique currently is maintaining of chart expression formulas in external database (mostly excel table). Then chart formulas are loaded into applications as variables by load script or macro. Maintaining of labels and comments are discussed less frequently but for me it is obvious that they should be stored along with formulas. If formulas stored in table, labels and comments should be columns of that table. In our previous projects we loaded expression names, labels and comments into application as an isle table and used them
+in UI through dollar sigh expansion with parameter: <code>=$(GetLabel('Sale'))</code> for example.</p>
+
+<p>As I understand it from that middle ground we and Jason move into opposite directions. Now we load all stuff - formulas definitions, labels, comments and so on - into variables and Jason use all, including formulas definitions itself directly from that isle table. Viewing from that perspective both techniques are somewhat radical. </p>
+
+<p>I prefer our approach anyway, but obviously it is very personal choice and other variants are perfectly useful too. So I’ve added new output format (tabular comma separated file) to Expression Editor. For example I switch output format at <code>Preferences-&gt;Package Settings-&gt;InQlik-Tools-&gt;QlikView variable file settings: User</code> to <code>CVS</code> and save expressions file  <code>CustomVariables.qlikview-vars</code> in sample project. I see in same directory autogenerated file <code>CustomVariables.table.csv</code> with contents:</p>
+
+<pre><code>
+ExpressionName,Label,Comment,Description,Section,Definition
+Sales,Sales,Sales amount for selected period,,,Sum(Quantity*UnitPrice)
+Sales1998,1998,Sales 1998,,,"Sum(If(Year(OrderDate)=1998, Quantity*UnitPrice))"
+Sales1997,1997,Sales 1997,,,"Sum(If(Year(OrderDate)=1997, Quantity*UnitPrice))"
+Sales1998to1997,Sales Index 98/97,Ratio for sales 1998 to 1997 years,,,($(Sales1998)/$(Sales1997))
+AvgOrder,Avg order value,Avg order value,,,Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
+NoOfOrders,No of orders,Number of orders,,,Count (Distinct OrderID)
+ShowLangSelection,,,,,0
+LightGreen,,,,,LightRed(96)
+</code></pre>
+
+<p>So in that output format each row contains name, definition, label, comment and some additional metadata. With that format added I think Expression Editor may be used in environments different
+from ours own.</p>
+
+<p><a href="/2014/02/expression-editor/">InQlik Expression Editor in QlikView Deployment Framework environment</a></p>
+
+
+
+	<div class="comments">
+		<a href="/2014/03/expression-editor-part-two/#disqus_thread" title="Show comments">Comments</a>
+	</div>
+ 
+  
+
+ 
+<div class="paginator">
+  
+  <div class="left_column">
+    
+      <a href="/page5/" title="Older entries">&laquo; older entries</a>
+    
+		&nbsp;
+  </div>
+  
+  <form action="http://www.google.com/search" id="search" method="get" class="search_column">
+  <fieldset>
+    <input class="text" name="q" type="text" />
+    <input name="sitesearch" type="hidden" value="inqlik.gitgub.io" />
+    <input class="button" type="submit" value="Search" />
+  </fieldset>
+</form>
+  
+  <div class="right_column">
+    
+      <a href="
+        
+          /page3
+        " title="Newer entries">newer entries &raquo;</a>
+    
+		&nbsp;
+  </div>
+ 
+  <div class="clear_both">
+  </div>
+ 
+</div>
+		
+    <div id="footer">
+      Powered by <a href="http://github.com/mojombo/jekyll" title="Jekyll Site Generator">Jekyll</a> &amp; <a href="http://disqus.com/" title="Disqus Commenting System">Disqus</a>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-47706781-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </div>
+ 
+		<script type="text/javascript">
+		    var disqus_shortname = 'inqlik';
+
+		    (function () {
+		        var s = document.createElement('script'); s.async = true;
+		        s.type = 'text/javascript';
+		        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+		        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+		    }());
+		</script>
+		
+  </body>
+</html>

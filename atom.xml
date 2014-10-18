@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>inqlik.gitgub.io</title>
+ <link href="http://inqlik.gitgub.io/atom.xml" rel="self"/>
+ <link href="http://inqlik.gitgub.io/"/>
+ <updated>2014-10-18T19:25:03+06:00</updated>
+ <id>http://inqlik.gitgub.io/</id>
+ <author>
+   <name>Vadim Tsushko</name>
+ </author>
+ 
+ 
+ <entry>
+   <title>Online tool to check syntax of QlikView expressions</title>
+   <link href="http://inqlik.gitgub.io/2014/10/online-syntax-chek-tool-for-qlikview-expressions/"/>
+   <updated>2014-10-18T00:00:00+06:00</updated>
+   <id>http://inqlik.gitgub.io/2014/10/online-syntax-chek-tool-for-qlikview-expressions</id>
+   <content type="html">&lt;p&gt;TL;DR: Check our &lt;a href=&quot;/live/build/web/parser.html&quot;&gt;on-line parser for QlikView expressions&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Currently in spare time I’m trying to add command line syntax check tool for qlikview chart expressions to ours team tool-box. We already use internally similar command line parser for qlikview load scripts. It definitely should be improved in future but already now (integrated in Sublime Text as Build system for qvs script) it provide some help in developing process. It is developed in dart programming language with sources available at &lt;a href=&quot;https://github.com/inqlik/qvs&quot;&gt;github repository&lt;/a&gt; for all interested in that kind of stuff. For the moment it completely lacks of documentation apart from set of unit-test and generally I think is ready only for our own internal usage.&lt;/p&gt;
+
+&lt;p&gt;So I thought - why not make comparable tool for checking our qlikview expression files? (in our projects all qlikview expressions are stored in text files, same as load scripts).
+Admittedly such a tool would require addition of sub-parser for Set analysis expressions but that should not be overwhelming task giving now I have some experience with other parsers (Actually that step is done now) &lt;/p&gt;
+
+&lt;p&gt;Well, it proved to be difficult to get from working parser for individual qlikview expression to useful tool for analyzing real code-base of expressions. You should decide what to do with all sorts of dollar sign expansions within expressions for example. Or how to deal with variables that are not valid expressions and rather some arbitrary chunks of code only used through variable expansion in other expressions. And some automatic procedure for getting metadata from end-user application would be nice too. Tool may then check each terminal identifier in expression against list of loaded fields in application. And so on. &lt;/p&gt;
+
+&lt;p&gt;So for now that tool is not ready even for internal usage, but I believe it eventually would develop into something useful.&lt;/p&gt;
+
+&lt;p&gt;Meantime I’ve decided to take advantage of dual nature of dart language which works both in command line scripts and (compiled to javascript) at web pages. I can take a expression parser from the package and use it in simple web application. &lt;/p&gt;
+
+&lt;p&gt;Go &lt;a href=&quot;/live/build/web/parser.html&quot;&gt;here&lt;/a&gt; to see how it works.&lt;/p&gt;
+
+&lt;p&gt;Some additional considerations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;That page works totally on the client side, parser and so on compiled to javascript.&lt;/li&gt;
+  &lt;li&gt;Page uses the excellent &lt;a href=&quot;http://www.qlikviewaddict.com/p/qlikview-web-highlight.html&quot;&gt;QlikView Web Syntax Highlighter&lt;/a&gt; to highlight expression syntax. (Actually it similar to how actual tool would be used at development. Sublime Text will provide syntax highlighting and qlikview expression parser would be used for syntax checking)&lt;/li&gt;
+  &lt;li&gt;Expressions can contain set analysis expression.&lt;/li&gt;
+  &lt;li&gt;Dollar sign expansions are not supported.&lt;/li&gt;
+  &lt;li&gt;Apart from dollar sign expansion on-line syntax checker should not give false negative results for expressions of any complexity. If you entered valid expression and checker report error in it, please &lt;a href=&quot;https://github.com/inqlik/qv_exp/issues&quot;&gt;add an issue&lt;/a&gt; at repository or leave a comment here.&lt;/li&gt;
+  &lt;li&gt;QlikView expression parser itself is at &lt;a href=&quot;https://github.com/inqlik/qv_exp&quot;&gt;its own repository&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Source code for web application is at &lt;a href=&quot;https://github.com/inqlik/inqlik.github.io/tree/master/live/web&quot;&gt;inqlik blog repository&lt;/a&gt; &lt;/li&gt;
+  &lt;li&gt;Application itself is basically minimally adapted dart web hello world sample&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Emulating cyclic dimension group in Qlik Sense</title>
+   <link href="http://inqlik.gitgub.io/2014/08/emulating-cyclic-dimension-group-in-qlik-sense/"/>
+   <updated>2014-08-01T00:00:00+06:00</updated>
+   <id>http://inqlik.gitgub.io/2014/08/emulating-cyclic-dimension-group-in-qlik-sense</id>
+   <content type="html">&lt;p&gt;Current version of Qlik Sense Desktop do not support cyclic dimension groups (drilldown groups are supported).&lt;br /&gt;
+In this post I illustrate how to emulate this functionality. This method does not employ extensions objects and so on. Basically it uses additionally loaded field in island table and macro expansion in chart dimension. Sample applicaiton is available.&lt;/p&gt;
+
+&lt;p&gt;Result looks like that:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qlik_sense_cyclic_group_1.png&quot; alt=&quot;Sales by cities&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and like that (another dimension selected):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/qlik_sense_cyclic_group_2.png&quot; alt=&quot;Sales by branches&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That solution has some glitches in current version but I think it can be useful if you wish to reduce amount of almost identical sheets in your Qlik Sense application.&lt;/p&gt;
+
+&lt;p&gt;Couple of sore points:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Lack of &lt;code&gt;Always Only One Selected Value&lt;/code&gt; setting in current version of Qlik Sense make selection of &lt;code&gt;Current active dimension&lt;/code&gt; not immediately obvious to user. In QlikView I would set &lt;code&gt;Always Only One Selected Value&lt;/code&gt; and use function &lt;code&gt;Only()&lt;/code&gt; in relevant expressions. In Qlik Sense I had to use &lt;code&gt;MinString()&lt;/code&gt; for that.  &lt;/li&gt;
+  &lt;li&gt;Currently Qlik Sense do not permit using of expression in dimension’s or measure’s label.
+In QlikView if I use dynamically changed dimension I would use dynamic label for it. This problem is somewhat alleviated by fact that title of any object can use expression. So in my example I made dynamic caption for table. But:&lt;/li&gt;
+  &lt;li&gt;Title of table did not made its way to Excel when I tried &lt;code&gt;Export to Excel&lt;/code&gt;. Actually in QlikView &lt;code&gt;Send to Excel&lt;/code&gt; do not export chart’s caption either. I’m usually do not use caption in QlikView charts but there we always can add dynamic context information into dimension/measure label&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;/downloads/CyclicGroupsEmulation.qvf&quot;&gt;Download sample application&lt;/a&gt; - you should place it at the directory &lt;code&gt;c:\Users\[User name]\Documents\Qlik\Sense\Apps&lt;/code&gt; to check it up.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Sample of QlikView automation by external VBScript scripts </title>
+   <link href="http://inqlik.gitgub.io/2014/07/qlikview-automation-by-scripts/"/>
+   <updated>2014-07-19T00:00:00+06:00</updated>
+   <id>http://inqlik.gitgub.io/2014/07/qlikview-automation-by-scripts</id>
+   <content type="html">&lt;p&gt;You can do all sorts of administrative tasks with QlikView applications through Automation API.
+Export charts to excel or csv files, export variables from application, set sheet level security parameters before deploying application or warm your application on server by automatically opening some sheets and selecting some most popular values in listboxes.&lt;/p&gt;
+
+&lt;p&gt;In most cases I would code such a task not as a macro inside QlikView application but as an separate external VBSCript file. Benefits of that approach:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;No need for elevated security settings for QlikView application&lt;/li&gt;
+  &lt;li&gt;Scripts are immediately ready for scheduling by Windows scheduler or other scheduling application. No need to run macro on onOpen trigger for that (and dispatch on command line parameters as described in comments to &lt;a href=&quot;http://qlikviewmaven.blogspot.ru/2008/08/qlikview-command-line-and-automation.html&quot;&gt;this post&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Strangely enough QlikView do not give any sensible information when macro fail. VBscript error messages are not always clear, but even in the worst case script give you line/column position of offending command - that is big help comparing to zero output from QlikView  &lt;/li&gt;
+  &lt;li&gt;You can use &lt;a href=&quot;http://www.sublimetext.com/3&quot;&gt;any good text editor&lt;/a&gt; with syntax highlighting to edit the scripts (arguably QlikView macro editor has it too so on that point it is a tie I believe)&lt;/li&gt;
+  &lt;li&gt;Your scripts are immediately ready for your favorite version control system.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Several tips for using external VBScript scripts:&lt;/p&gt;
+
+&lt;h4 id=&quot;macro-to-vbscript-conversion&quot;&gt;Macro to VBScript conversion&lt;/h4&gt;
+
+&lt;p&gt;Most examples of QlikView automation on the net and all examples in APIGuide are for usage in macros. There is two simple steps for converting such samples into working VBscript:
+In QlikView macros global variable &lt;code&gt;ActiveDocument&lt;/code&gt; is entry point to automation API, QlikView application object accessible as &lt;code&gt;ActiveDocument.GetApplication&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;In VBScript we initialize two automation objects for qlikview app and qlikview document.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+Set MyApp = CreateObject(&quot;QlikTech.QlikView&quot;)
+Set MyDoc = MyApp.OpenDoc (&quot;C:\QlikViewApps\Demo.qvw&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that you should use absolute path to QlikView document on &lt;code&gt;OpenDoc&lt;/code&gt; parameter. That is mandatory.&lt;/p&gt;
+
+&lt;p&gt;Then use &lt;code&gt;MyDoc&lt;/code&gt; instead of global variable &lt;code&gt;ActiveDocument&lt;/code&gt; and &lt;code&gt;MyApp&lt;/code&gt; instead of &lt;code&gt;ActiveDocument.GetApplication&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;automating-application-on-qlikview-server&quot;&gt;Automating application on QlikView server&lt;/h4&gt;
+
+&lt;p&gt;For example that could be usefull to schedule warming up of your application after nightly reload.
+To automate application residing on the QlikView server you shoud use full path to your application on OpenDoc parameter. It could be something like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+Set MyDoc = MyApp.OpenDoc (&quot;qvp://localhost/AppFolder/My application.qvw&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For me it works only with ActiveDirectory authentication. Basically if you can open application in QlikView Desktop with &lt;code&gt;Use NT Identity&lt;/code&gt; radiobutton selected and user/login dialog do not appear on opening - automation from VBScript should work too.&lt;/p&gt;
+
+&lt;h4 id=&quot;code-reuse&quot;&gt;Code reuse&lt;/h4&gt;
+
+&lt;p&gt;It could be useful to collect common utility functions and classes (yes, VBScript have a classes too!!!) in a some library and use it throughout many scripts. Unfortunately VBScrip lacks standard &lt;code&gt;import&lt;/code&gt; directive.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://msdn.microsoft.com/library/15x4407c(v=VS.84).aspx&quot;&gt;WSF file format&lt;/a&gt; add it and much more. I’ve tried it but it feels like an unnecessary complicated stuff.&lt;/p&gt;
+
+&lt;p&gt;So if import-like functionality is truly necessary I would use simple one-line function &lt;code&gt;includeFile&lt;/code&gt; like in this example where on top of our script we import code from &lt;code&gt;QvUtils.vbs&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+Sub includeFile(ByVal fSpec)
+    executeGlobal CreateObject(&quot;Scripting.FileSystemObject&quot;).openTextFile(fSpec).readAll()
+End Sub
+
+includeFile &quot;QvUtils.vbs&quot;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Below some simple samples for illustration:&lt;/p&gt;
+
+&lt;p&gt;Given simple test application:
+&lt;img src=&quot;/images/automation_sample.png&quot; alt=&quot;Sample test application&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Script to export straight chart to excel file with different values selected in field &lt;code&gt;Year&lt;/code&gt; &lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+
+set fso = CreateObject(&quot;Scripting.FileSystemObject&quot;)
+dim CurrentDirectory
+CurrentDirectory = fso.GetParentFolderName(Wscript.ScriptFullName)
+set qv = CreateObject(&quot;QlikTech.QlikView&quot;)
+dim qvDocName
+qvDocName = fso.BuildPath(CurrentDirectory, &quot;..\App\AutomationTest.qvw&quot;)
+set doc = qv.OpenDoc(qvDocName)
+set chart = doc.GetSheetObject(&quot;CH01&quot;)
+doc.Fields(&quot;Year&quot;).Clear
+set yearValues=doc.Fields(&quot;Year&quot;).GetPossibleValues
+dim curVal
+for i=0 to yearValues.Count-1
+  curVal = yearValues.Item(i).Text
+  doc.Fields(&quot;Year&quot;).Select curVal
+  chart.ExportBiff(fso.BuildPath(CurrentDirectory,&quot;..\Output\Report_&quot; &amp;amp; curVal &amp;amp; &quot;.xls&quot;))
+next
+doc.CloseDoc
+qv.Quit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Same script separated to utils mini-library and script proper:&lt;/p&gt;
+
+&lt;p&gt;QvUtils.vbs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+
+function GetAbsolutePath(ByVal filePath)
+  if Mid(filePath,2,1) = &quot;:&quot; OR Left(filePath,2) = &quot;\\&quot; then 'Absolute path in input parameter'
+    GetAbsolutePath = filePath
+  else
+    dim fso: set fso = CreateObject(&quot;Scripting.FileSystemObject&quot;)
+    GetAbsolutePath = fso.BuildPath(fso.GetParentFolderName(Wscript.ScriptFullName), filePath)
+  end if
+end function
+
+Class QlikView
+  Private m_App
+  Private m_Doc
+  Private m_docName
+  Private Sub Class_Initialize
+    m_docName = &quot;&quot;
+  End Sub
+
+  Public Property Get app
+    set app = m_App
+  End Property
+
+  Public Property Get doc
+    set doc = m_Doc
+  End Property
+
+  Public Property Get docName
+    docName = m_docName
+  End Property
+
+  public function setDocument(ByVal docName)
+    m_docName = GetAbsolutePath(docName)
+  end function
+
+  Public Function open(ByVal docName)
+    setDocument(docName)
+    set m_App  = CreateObject(&quot;QlikTech.QlikView&quot;)
+    set m_Doc = app.OpenDoc(m_docName)
+  End Function
+
+  Public function Quit
+    m_App.Quit
+    Release
+  End function
+
+  Public function Release
+    set m_shell = Nothing
+    set m_Doc = Nothing
+    set mApp = Nothing
+  end function
+End Class
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;GenerateReports.vbs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+
+Sub includeFile(ByVal fSpec)
+    executeGlobal CreateObject(&quot;Scripting.FileSystemObject&quot;).openTextFile(fSpec).readAll()
+End Sub
+
+includeFile &quot;QvUtils.vbs&quot;
+
+with New QlikView
+  .open(&quot;..\App\AutomationTest.qvw&quot;)
+  set chart = .doc.GetSheetObject(&quot;CH01&quot;)
+  .doc.Fields(&quot;Year&quot;).Clear
+  set yearValues = .doc.Fields(&quot;Year&quot;).GetPossibleValues()
+  dim curVal
+  for i=0 to yearValues.Count - 1
+    curVal = yearValues.Item(i).Text
+    .doc.Fields(&quot;Year&quot;).Select curVal
+    chart.ExportBiff(GetAbsolutePath(&quot;..\Output\Report_&quot; &amp;amp; curVal &amp;amp; &quot;.xls&quot;))
+  next
+  .doc.CloseDoc
+  .Quit
+end with
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Script to disable most settings in Sheet Security dialog (can be run upon qvw before deployment)
+Target configuration is like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/sheet_properties.png&quot; alt=&quot;Sample test application&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Script uses QvUtils.vbs
+Use as in &lt;code&gt;cscript set_sheet_properties.vbs ..\App\AutomationTest.qvw&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;set_sheet_permissions.vbs&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;vbscript&quot;&gt;
+
+Sub includeFile(ByVal fSpec)
+    executeGlobal CreateObject(&quot;Scripting.FileSystemObject&quot;).openTextFile(fSpec).readAll()
+End Sub
+
+includeFile &quot;QvUtils.vbs&quot;
+
+if WScript.Arguments.Count &amp;lt;&amp;gt; 1 then
+    WScript.Echo &quot;Syntax is: cscript SetSheetPermissions.vbs &lt;qlikviewfilename&gt;&quot;
+    WScript.Quit 1
+end if
+
+with New QlikView
+  .open(WScript.Arguments(0))
+  for i = 0 to .doc.NoOfSheets - 1
+    set sheet = .doc.GetSheet(i)
+    set sp=sheet.GetProperties
+    sp.UserPermissions.CopyCloneSheetObject = false
+    sp.UserPermissions.AccessSheetProperties = false
+    sp.UserPermissions.AddSheetObject = false
+    sp.UserPermissions.MoveSizeSheetObject = false
+    sp.UserPermissions.RemoveSheet = false
+    sp.UserPermissions.RemoveSheetObject = false
+    sheet.SetProperties sp
+  next
+  .doc.Save
+  .Quit
+end with
+
+
+[Download sample project](/downloads/QlikViewAutomationSample.zip)
+&lt;/qlikviewfilename&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>InQlik Expression Editor, part two</title>
+   <link href="http://inqlik.gitgub.io/2014/03/expression-editor-part-two/"/>
+   <updated>2014-03-15T00:00:00+06:00</updated>
+   <id>http://inqlik.gitgub.io/2014/03/expression-editor-part-two</id>
+   <content type="html">&lt;p&gt;After writing previous post I have &lt;a href=&quot;http://community.qlik.com/docs/DOC-6046&quot;&gt;very interesting discussion&lt;/a&gt; with &lt;a href=&quot;http://community.qlik.com/people/jason.michaelides&quot;&gt;Jason Michaelides&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Jason raised perfectly valid question about performance considerations of using &lt;code&gt;=&lt;/code&gt; sign in variable definition. In my example I use it with dynamic labels and comments. Actually I never used sort of internalization similar to my sample and almost all labels and comments in our applications are pretty static. So after some thought and some unsuccessful attempts to make it work differently I gave up. Approach in my example is pretty and uniform but now I think I would still use it only for couple or at most dozen of labels for entire application. In case I would need actual internalization where all labels and comments should be 100% dynamic I would probably prefer variable definition without &lt;code&gt;=&lt;/code&gt; sign with consecutive dollar sign expansion in chart expression’s labels and comments.
+So for AvgOrder in Expression editor it would be like: &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+---
+SET: AvgOrder
+Definition: Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
+Label: If($(russianNotSelected),'Avg order value','Средний чек')
+Comment: If($(russianNotSelected),'Avg order value','Средний чек')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And in chart expression Label would be set to &lt;code&gt;=$(AvgOrder.Label)&lt;/code&gt; and Comment to &lt;code&gt;=$(AvgOrder.Comment)&lt;/code&gt;
+Looks slightly worse for my eyes but it probably worth it.&lt;/p&gt;
+
+&lt;p&gt;Another interesting point in Jason’s article and consecutive conversation was Jason’s overall approach to application modeling. &lt;/p&gt;
+
+&lt;p&gt;I think most frequently used technique currently is maintaining of chart expression formulas in external database (mostly excel table). Then chart formulas are loaded into applications as variables by load script or macro. Maintaining of labels and comments are discussed less frequently but for me it is obvious that they should be stored along with formulas. If formulas stored in table, labels and comments should be columns of that table. In our previous projects we loaded expression names, labels and comments into application as an isle table and used them
+in UI through dollar sigh expansion with parameter: &lt;code&gt;=$(GetLabel('Sale'))&lt;/code&gt; for example.&lt;/p&gt;
+
+&lt;p&gt;As I understand it from that middle ground we and Jason move into opposite directions. Now we load all stuff - formulas definitions, labels, comments and so on - into variables and Jason use all, including formulas definitions itself directly from that isle table. Viewing from that perspective both techniques are somewhat radical. &lt;/p&gt;
+
+&lt;p&gt;I prefer our approach anyway, but obviously it is very personal choice and other variants are perfectly useful too. So I’ve added new output format (tabular comma separated file) to Expression Editor. For example I switch output format at &lt;code&gt;Preferences-&amp;gt;Package Settings-&amp;gt;InQlik-Tools-&amp;gt;QlikView variable file settings: User&lt;/code&gt; to &lt;code&gt;CVS&lt;/code&gt; and save expressions file  &lt;code&gt;CustomVariables.qlikview-vars&lt;/code&gt; in sample project. I see in same directory autogenerated file &lt;code&gt;CustomVariables.table.csv&lt;/code&gt; with contents:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+ExpressionName,Label,Comment,Description,Section,Definition
+Sales,Sales,Sales amount for selected period,,,Sum(Quantity*UnitPrice)
+Sales1998,1998,Sales 1998,,,&quot;Sum(If(Year(OrderDate)=1998, Quantity*UnitPrice))&quot;
+Sales1997,1997,Sales 1997,,,&quot;Sum(If(Year(OrderDate)=1997, Quantity*UnitPrice))&quot;
+Sales1998to1997,Sales Index 98/97,Ratio for sales 1998 to 1997 years,,,($(Sales1998)/$(Sales1997))
+AvgOrder,Avg order value,Avg order value,,,Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
+NoOfOrders,No of orders,Number of orders,,,Count (Distinct OrderID)
+ShowLangSelection,,,,,0
+LightGreen,,,,,LightRed(96)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So in that output format each row contains name, definition, label, comment and some additional metadata. With that format added I think Expression Editor may be used in environments different
+from ours own.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/2014/02/expression-editor/&quot;&gt;InQlik Expression Editor in QlikView Deployment Framework environment&lt;/a&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>InQlik Expression Editor in QlikView Deployment Framework environment</title>
+   <link href="http://inqlik.gitgub.io/2014/02/expression-editor/"/>
+   <updated>2014-02-22T00:00:00+06:00</updated>
+   <id>http://inqlik.gitgub.io/2014/02/expression-editor</id>
+   <content type="html">&lt;p&gt;We’ve switched to QlikView Deployment Framework recently so adjusting our current toolset to new environment was a great opportunity to rethink some approaches and implement some properties in alternative way. In this post I’d like to present some background design considerations and current state of one of these tools - Expression Editor. &lt;/p&gt;
+
+&lt;p&gt;Expression Editor is a module in &lt;a href=&quot;https://github.com/inqlik/inqlik-tools&quot;&gt;InQlik Tools&lt;/a&gt; - free open-source package for Sublime Text editor. Overview of Sublime Text itself you may find &lt;a href=&quot;http://www.linuxjournal.com/content/sublime-text-one-editor-rule-them-all&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically at the moment InQlik Tools consist of&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Language syntax plugin for qvs script files&lt;/li&gt;
+  &lt;li&gt;Integrated QVD metadata viewer&lt;/li&gt;
+  &lt;li&gt;Expression Editor&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Other parts of InQlik Tools may be subject of another post. Lets look at Expression Editor.&lt;/p&gt;
+
+&lt;p&gt;We started to use external storage for variables of our QlikView applications almost from start of our involvement with QlikView. I sincerely believe that any form of external maintenance is superior to direct editing of chart diagram expressions. So we started with external Excel files with variable expressions. It has feelings of &lt;em&gt;right thing to do in the long run&lt;/em&gt; but sort of a impediment in the direct design process. And obviously while Excel files excel in some other aspects - as a target format for version control systems they are not very helpful.&lt;/p&gt;
+
+&lt;p&gt;So we sought and tried other tools: better editors for tabular data and so on. Wishes for the future instrument were:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ideally it should have a text format for best interoperability with VCS&lt;/li&gt;
+  &lt;li&gt;Readability: Variables and expressions are first of all program code. They contain huge part of overall logic of end-user application. By old rule of the thumb any line of program code is read ten times more frequently then written or changed. &lt;/li&gt;
+  &lt;li&gt;Decent experience while writing code: Ideally you should have same sort of help as in Expression Editor within QlikView application&lt;/li&gt;
+  &lt;li&gt;Metadata support. Any variable has a name. But variables in end-user QlikView application are mostly not simple variables. Frequenlty they represent an instance of a chart expression. Each of such an expression necessarily has to have at least &lt;code&gt;Label&lt;/code&gt; and &lt;code&gt;Comment&lt;/code&gt; for its visual representation in a chart. Some have &lt;code&gt;Background Color&lt;/code&gt; and so on. It would be nice to have all these related properties stored together.&lt;/li&gt;
+  &lt;li&gt;Should load to QlikView effectively&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some our previous attempts were:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tabular text format with support from ST plugin. Fail on readability and comfort of editing with large expressions.&lt;/li&gt;
+  &lt;li&gt;YAML format with QlikView &lt;code&gt;Load from YAML&lt;/code&gt; function. That was a more less promising direction, but a writing decent text parser in QlikView script is not such an attractive task.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Our current solution to this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;YAML like format. 
+    &lt;ul&gt;
+      &lt;li&gt;Good for reading. &lt;/li&gt;
+      &lt;li&gt;Compatibility with YAML is broken to allow less ceremony while writing the code. For example: In YAML there is special symbol for beginning of multiline string. Expression editor knows that expression definition can be multiline, so there is no need to designate multiline string explicitly&lt;/li&gt;
+      &lt;li&gt;Very good with regard to CVS &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;On the fly generation of csv file in format of variable csv file of QlikView Deployment Framework&lt;/li&gt;
+  &lt;li&gt;Syntax highlighting for proprietary tags and for QlikView expressions in definitions parts&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To get some view of this instrument, lets look how we can use Expression Editor to modify sample app from QlikView Deployment Framework. (All app used are available at download link below)&lt;/p&gt;
+
+&lt;p&gt;Original sample application do not use external storage of variables. All expression defined (sometimes repeatedly) inside charts.&lt;/p&gt;
+
+&lt;p&gt;So our &lt;strong&gt;first step&lt;/strong&gt; would be extracting expressions from original application:
+&lt;img src=&quot;/images/north-1.png&quot; alt=&quot;Original sample&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next: write down expressions in Expression Editor. I transfer Name, Definition, Label and Comment for each chart expression used in sample application. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/expression-editor-1.png&quot; alt=&quot;Expression Editor 1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Next step&lt;/strong&gt;: Lets replace hard written values with values from external repository&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/north-2.png&quot; alt=&quot;Sample with expressions&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On that step you can see some characteristics of that technique. 
+- Inline expression for average order now replaced by $(AvgOrder). It seems to be an unquestionable improvement.&lt;br /&gt;
+- Plain text label &lt;code&gt;Avg order value&lt;/code&gt; replaced by formula &lt;code&gt;=AvgOrder.Label&lt;/code&gt;. Admittedly it looks not so pretty as original text. And given full row of such labels at &lt;strong&gt;Expressions&lt;/strong&gt;, &lt;strong&gt;Number&lt;/strong&gt; or &lt;strong&gt;Axes&lt;/strong&gt; tabs or Properties dialog their repeated &lt;code&gt;.Label&lt;/code&gt; parts somewhat irritate eyes.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;=Sales.Label&lt;/li&gt;
+  &lt;li&gt;=AvgOrder.Label&lt;/li&gt;
+  &lt;li&gt;=Sales1998.Label&lt;/li&gt;
+  &lt;li&gt;=Sales1997.Label&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But I would argue that it is an improvement anyway: I believe that in such overview panels with many expressions in row - most important feature is a unambiguity. Looking at row above I immediately and confidently may expect that second expression in that chart correspond to expression AvgOrder in external storage. On the other hand &lt;code&gt;Avg order value&lt;/code&gt; label and all the more &lt;code&gt;1998&lt;/code&gt; label in big application can correspond to several terminal expressions. &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Just for sake of demonstration purpose I add &lt;code&gt;Sales.BackgroundColor&lt;/code&gt; to &lt;code&gt;Sales&lt;/code&gt; expression so on the whole it looks like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+---
+SET: Sales
+Definition: Sum(Quantity*UnitPrice)
+Label: Sales
+Comment: Sales amount for selected period
+BackgroundColor: =LightGreen(96)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next I use this variable for Sales chart expression both on Dashboard and Sales sheets of application. Now we’ve got nice uniformly greenish color for Sales across two charts.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/north-3.png&quot; alt=&quot;Sample with expressions 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On the next step I’ll implement somewhat contrived task for that demo: localization of UI. 
+Do not blame me, it is definitely not the working solution and most part of applications will stay in English no matter what. I’ll just try to demonstrate some points.&lt;/p&gt;
+
+&lt;p&gt;Lets save our CustomVariables file as CustomVariables_i18n and modify it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+---
+SET: AvgOrder
+Definition: Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
+Label: Avg order value
+Comment: Avg order value
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;changed to&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+---
+SET: AvgOrder
+Definition: Sum(Quantity*UnitPrice)/Count(DISTINCT OrderID)
+Label: =If($(russianNotSelected),'Avg order value','Средний чек')
+Comment: =If($(russianNotSelected),'Avg order value','Средний чек')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/expression-editor-2.png&quot; alt=&quot;Expression Editor 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next: Lets change our LoadApp script so it would load new version of expressions and additionally load isolate table with languages: En and Ru&lt;/p&gt;
+
+&lt;p&gt;Now reload sample application and it will respond on language selection - labels and help string of our charts will be localized. And what is most nice - we do not change anything in the end-user application for that. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/north-4.png&quot; alt=&quot;Sample with expressions 4&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In common programming parlance: Presentation layer was separated from domain model layer and that did provide opportunity to make changes in that layers somewhat independently. &lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; Labels and Comments work nicely when they are just string values, and continue to work without any changes when they become dynamic expressions themselves. &lt;/p&gt;
+
+&lt;p&gt;Admittedly it was rather contrived example. In our projects only tiny amount of labels and comments are dynamic. Actually much more used and valuable is ability to manage all comments and labels as a string in one place.&lt;/p&gt;
+
+&lt;p&gt;Thus we have completed our demo project and seen basic usage of expression editor. Lets see some additional features&lt;/p&gt;
+
+&lt;h4 id=&quot;additional-structure-and-fast-navigation&quot;&gt;Additional structure and fast navigation&lt;/h4&gt;
+
+&lt;p&gt;Names of expression in expression file marked as symbols. Additionally there is way group any logically related group of expressions in section within expression file. It provide opportunity to get some structure of expression file. See result go Goto Symbol (&lt;code&gt;Ctrl-R&lt;/code&gt;) command.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/expression-editor-3.png&quot; alt=&quot;Goto symbol&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On this tiny sample it is not important, but in real projects that is quite useful. Note, that I set colon sign before section name. It is not required but with such convention I could easily filter that symbols list just to sections, and thus move fast between sections&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/expression-editor-4.png&quot; alt=&quot;Goto symbol 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Another feature useful in real size project: Goto definition (&lt;code&gt;F12&lt;/code&gt;) command. With it you could place cursor into any variable in expression (for example into &lt;code&gt;$(russianNotSelected)&lt;/code&gt;) and immediately jump to line where that variable is defined in same file or other file of same project. Then you return to original spot by &lt;code&gt;Alt -&lt;/code&gt; key combination.&lt;/p&gt;
+
+&lt;h4 id=&quot;configurable-settings&quot;&gt;Configurable settings&lt;/h4&gt;
+
+&lt;p&gt;By default Expression editor use ExpressionName.TagName naming convention. You can change it Package Settings. Your variables could look like Sales_Label if you set &lt;code&gt;separator&lt;/code&gt; field to value ‘_’.
+I prefer dot as separator because QlikView works very nice with it. You double click on name part of expression and QlikView select only that part. Double click on Tag part of expression and QlikView select only Tag part. So you for example can copy fully populated chart expression, paste it and then easily change name parts of expression in all fields.
+Additionally you can change tag to expression mappings. Actually we use a Russian names for our expression, so our expression for &lt;code&gt;Sales&lt;/code&gt; would be &lt;code&gt;Продажи&lt;/code&gt;. With ‘label’ tag mapped to &lt;code&gt;Заголовок&lt;/code&gt; in User settings our corresponding variable is named &lt;code&gt;Продажи.Заголовок&lt;/code&gt;
+Another setting is &lt;code&gt;output_mode&lt;/code&gt;. By default Expression editor produce CSV file in QDF variable format on every save. If you set parameter &lt;code&gt;output_mode&lt;/code&gt; to QVS instead of QDF Expression editor would generate plain QVS script with LET and SET commands.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/expression-editor-5.png&quot; alt=&quot;QVS output_format&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Consider this mode as experimental - we tentatively choose CSV output format as a default for our projects so it is currently more tested&lt;/p&gt;
+
+&lt;h3 id=&quot;macros&quot;&gt;Macros&lt;/h3&gt;
+
+&lt;p&gt;There is well known bug/feature in QlikView dollar sign macro expansion: you can not pass parameter containing comma in it. There is known workaround- for example &lt;a href=&quot;http://bi-review.blogspot.ru/2012/05/how-to-write-reusable-and-expandable.html&quot;&gt;that&lt;/a&gt;. 
+Basically you change your commas to something else in input parameters and then you replace that something with commas in target expression. It’s good solution for some cases, but 
+sometimes that would not work. &lt;/p&gt;
+
+&lt;p&gt;Consider long multi-branched &lt;code&gt;if&lt;/code&gt; expression that returns trendy icon based on input value&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+---
+set: ArrowIconForTrendValue
+definition: if($1 = 0 OR IsNull($1), null(), 'qmem://&amp;lt;builtin&amp;gt;/' &amp;amp; 
+  if($1 &amp;gt;= 1.20,'Arrow_N_G.png',
+  if($1 &amp;gt;= 1.051,'Arrow_NE_G.png',
+  if($1 &amp;gt;= 1.05 ,'Arrow_NE_G.png',
+  if($1 &amp;gt;= 1,'Arrow_E_Y.png',
+  if($1 &amp;gt;= .95 ,'Arrow_W_Y.png',
+  if($1 &amp;gt;= .801  ,'Arrow_SE_R.png',
+  if($1 &amp;gt;= .80 ,'Arrow_S_R.png',
+  if($1 &amp;gt;= 0 ,'Arrow_S_R.png','Arrow_S_R.png')))))))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Firstly you hardly want to replace all $1’s with $(=Replace(‘$1’, ‘;’, ‘,’)) in that
+expression.&lt;/p&gt;
+
+&lt;p&gt;Secondly - say you want use &lt;code&gt;$(Sales1998to1997)&lt;/code&gt; as input parameter of that &lt;code&gt;ArrowIconForTrendValue&lt;/code&gt; expression. You can’t because &lt;code&gt;Sales1998to1997&lt;/code&gt; is plain expression defined before as &lt;code&gt;$(Sales1998)/$(Sales1997)&lt;/code&gt;. And &lt;code&gt;Sales1998&lt;/code&gt; in it defined as &lt;code&gt;Sum(If(Year(OrderDate)=1998, Quantity*UnitPrice))&lt;/code&gt; which is in fact contains comma in question. &lt;/p&gt;
+
+&lt;p&gt;So we not only should make our function expression (ArrowIconForTrendValue) less readable but also should make all parameters for that function anew - not using already existing expressions. That does not compose well.&lt;/p&gt;
+
+&lt;p&gt;Enter the Expression Editor &lt;code&gt;macro&lt;/code&gt;. Given &lt;code&gt;ArrowIconForTrendValue&lt;/code&gt; and &lt;code&gt;Sales1998to1997&lt;/code&gt; expressions above we can define new variable as &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+---
+set: ArrowIconForSales1998to1997
+macro: ArrowIconForTrendValue
+  - $(Sales1998to1997)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Macro tag get function expression name and YAML formatter list of parameters (in that example one parameter). Output format for that expression in CSV file would be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SET ArrowIconForSalesTrend,&quot;if($(Sales1998to1997) = 0 OR IsNull($(Sales1998to1997)), null(), 'qmem://&amp;lt;builtin&amp;gt;/' &amp;amp; if($(Sales1998to1997) &amp;gt;= 1.20,'Arrow_N_G.png', if($(Sales1998to1997) &amp;gt;= 1.051,'Arrow_NE_G.png', if($(Sales1998to1997) &amp;gt;= 1.05 ,'Arrow_NE_G.png', if($(Sales1998to1997) &amp;gt;= 1,'Arrow_E_Y.png', if($(Sales1998to1997) &amp;gt;= .95 ,'Arrow_W_Y.png', if($(Sales1998to1997) &amp;gt;= .801  ,'Arrow_SE_R.png', if($(Sales1998to1997) &amp;gt;= .80 ,'Arrow_S_R.png', if($(Sales1998to1997) &amp;gt;= 0 ,'Arrow_S_R.png','Arrow_S_R.png')))))))))&quot;,,
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So on code-generation phase plugin would emulate dollar sign substitution of expression parameter with actual value, so QlikView would get clean expanded variable without any parameter, ready for further processing. I’ve included these sample expressions in demo project&lt;/p&gt;
+
+&lt;p&gt;We do not use this feature frequently but when we do - it is nice to have.&lt;/p&gt;
+
+&lt;h3 id=&quot;using-of-demo-project&quot;&gt;Using of demo project&lt;/h3&gt;
+
+&lt;p&gt;You can &lt;a href=&quot;/downloads/InqlikExpressionEditorDemoProject.zip&quot;&gt;download&lt;/a&gt; and look at materials used in this post. Demo project is based on demo application &lt;code&gt;NorthWindExampleMart&lt;/code&gt; from QlikView Deployment Framework. QDF file structure per se was not used in this tiny example, but essential function &lt;code&gt;LoadVariableCSV&lt;/code&gt; was used.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;NorthWindExampleMart_Original.qvw&lt;/code&gt; is essentially NorthWindExampleMart application fro QVF, adapted for stripped down environment of demo project.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;NorthWindExampleMart_WithExpression.qvw&lt;/code&gt; is the same application with added section for loading variables from csv file and all chart expressions modified to use these loaded variables. Initially this application loads static labels and comments. To get last example with dynamically localized labels and comments you should uncomment last line in file LoadApp_WithExpressions.qvs &lt;/p&gt;
+
+&lt;p&gt;To look at InQlik Expression Editor in action you should install &lt;a href=&quot;http://www.sublimetext.com/3&quot;&gt;Sublime Text 3&lt;/a&gt; and &lt;a href=&quot;https://github.com/inqlik/inqlik-tools&quot;&gt;InQlik Tools&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/2014/03/expression-editor-part-two/&quot;&gt;InQlik Expression Editor, part two&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+
+      &lt;p&gt;I define Comment arbitrary when it is absent in original application. It’s just a habit to have both Label and Comment for chart expression. Actually in that application Comments mostly not used in charts, but if I simply switch any box diagram into straight table for example - it would be nice to have them from the start. On the other hand simple variables not used as chart expression usually have only name (defined in LET or SET part of expression block) and definition. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+
+      &lt;p&gt;In previous version of Expression Editor we used disconnected table for expressions metadata. So expressions labels used to look like $(GetLabel(AvgOrder)).&lt;/p&gt;
+
+      &lt;p&gt;Current solution (with clustered group of variables for each expression: &lt;code&gt;Sales&lt;/code&gt;, &lt;code&gt;Sales.Label&lt;/code&gt;, &lt;code&gt;Sales.Comment&lt;/code&gt;, &lt;code&gt;Sales.TextColor&lt;/code&gt; for example) was inspired by QlikView Deployment Framework. QlikView Deployment Framework has option to store Comments for variable in linked variable.&lt;/p&gt;
+
+      &lt;p&gt;That solution has already proved itself as a big improvement. First of all &lt;code&gt;=Sales.Label&lt;/code&gt; looks slightly better then &lt;code&gt;$(GetLabel(Sales))&lt;/code&gt;. But arguably more important part is: QlikView itself provide much more support in design time with this approach. In edit box for Label value for example, when you  start typing =Sale - you get possible completions, and immediately know if corresponding variable exists. If not - expression would be red underscored. Inside the $() you can write devil and all. No completions, and QlikView will indifferently color right thing and nonsense alike in dim gray. Such a difference matter a lot on the visualization phase.  &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot;&gt;
+      &lt;p&gt;There was some cheating - I created and hid listbox for language selection beforehand.    &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Dynamic number formatting in chart expressions. Pros and cons</title>
+   <link href="http://inqlik.gitgub.io/2014/01/dynamic-number-formatting-in-chart-expressions/"/>
+   <updated>2014-01-25T00:00:00+06:00</updated>
+   <id>http://inqlik.gitgub.io/2014/01/dynamic-number-formatting-in-chart-expressions</id>
+   <content type="html">&lt;p&gt;First of all - a definition. QlikView charts properties dialog has a &lt;code&gt;Number&lt;/code&gt; tab where we are setting formats for each expression manually. That I will name static number formatting in this post.&lt;/p&gt;
+
+&lt;p&gt;Whole bunch of various controls together are helping user to set proper value to property &lt;code&gt;Format Pattern&lt;/code&gt;. Importantly - &lt;code&gt;Format Pattern&lt;/code&gt; can not be set by variable expression. So you can set &lt;code&gt;Background Color&lt;/code&gt; or &lt;code&gt;Text Format&lt;/code&gt; of chart expression by variable expression but not &lt;code&gt;Format Pattern&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It’s rather not obvious why that should be so, and apparently not only for me - because I found such &lt;a href=&quot;http://community.qlikview.com/ideas/1364&quot;&gt;Idea&lt;/a&gt; &lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h4 id=&quot;allow-format-pattern-to-use-an-expression&quot;&gt;Allow “Format Pattern” to use an expression&lt;/h4&gt;
+  &lt;p&gt;In many places you can use expressions to dynamically control QlikView. This should also be one of them.Especially when it comes to enterprise deployments with employees in multiple countries/cultures collaborating in one QV application a dynamic display is needed.Please email me for a detailed problem description / documentation if needed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Which got answer from QlikTech engineer: &lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;Works as designed. The idea is good. The reality is from we do not want to permit expressions to be evaluated at such a low level.&lt;/p&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Well, it still looks as a rather cryptic answer for me, but this issue is four year old and nothing tells something would move on it in foreseeable future.&lt;/p&gt;
+
+&lt;p&gt;So another approach would be to format expressions in-place. For example you have expression for Sales&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Sum(Sales)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On &lt;code&gt;Number&lt;/code&gt; tab your &lt;code&gt;Number Format Settings&lt;/code&gt; set to default value - &lt;code&gt;Expression default&lt;/code&gt;. You pre-formate your expression with (for example) &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Money(Sum(Sales),'$# ##0,00;-$# ##0,00')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That is what I will call dynamic formatting in chart expression. At first glance such technic is even better than using separate expression variable with &lt;code&gt;Format Pattern&lt;/code&gt;. After all we do not have to manage additional variable. That approach can easily handle even more dynamic scenarios. For example, if we have to change format accordingly to selection made in field &lt;code&gt;Country&lt;/code&gt;, we could add variable &lt;code&gt;vMoneyFormat&lt;/code&gt; which dependent from that selection and change our expression for &lt;code&gt;Sales&lt;/code&gt; to&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Money(Sum(Sales),$(vMoneyFormat))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We started to use dynamic formatting recently and for us it is real improvement.
+But there is time for cons in that story.&lt;/p&gt;
+
+&lt;p&gt;Our new Num() formatted expressions looked and acted in application as equals to old statically formatted ones. But in one respect they were unequal. &lt;code&gt;Send to Excel&lt;/code&gt; function respected static formatting but totally disregarded dynamic formatting.&lt;/p&gt;
+
+&lt;p&gt;Cell value 12.34% became 0.123398723123. Not good.&lt;/p&gt;
+
+&lt;p&gt;We did our Google search on that problem and results where not so optimistic. Apparently behavior of dynamically formatted expressions on &lt;code&gt;Send to Excel&lt;/code&gt; changes constantly. In the midst of year 2012 in QV11 expressions formatted by Num() function were &lt;a href=&quot;http://community.qlikview.com/thread/53189&quot;&gt;converted to Text&lt;/a&gt; by the way to Excel, There was &lt;a href=&quot;https://eu1.salesforce.com/articles/Basic/How-to-export-data-to-excel-as-number-in-version-11&quot;&gt;some way&lt;/a&gt; to keep it in numbers, but otherwise unformatted. Now in QV11 SR4/5 that is default behavior out of the box - in Excel values arrive as unformatted numbers. &lt;/p&gt;
+
+&lt;p&gt;Almost by accident we’ve found that formatting by Money() function is respected by &lt;code&gt;Send to Excel&lt;/code&gt; as opposed to Num(). We did not use Money() much before as our usual set of number formats are Integer, Fixed to two decimals and Percent. Percent format pattern particularly did not look as good candidate to use in Money function but unexpectedly it worked. So strange expression formatter like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Money($(vCurrentMonthSales)/$(vPreviousMonthSales),'# ##0,00%')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;works good both in application and after &lt;code&gt;Send to Excel&lt;/code&gt;. Checked on QV11 SR4 and SR5.&lt;/p&gt;
+
+&lt;p&gt;Look at example chart with some expression&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/dynamic_formatting_qv.png&quot; alt=&quot;Dynamic formatting in QlikView&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;and how it looks in Excel&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/dynamic_formatting_excel.png&quot; alt=&quot;Sent to Excel&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So for now we search/replaced all Num() to Money() in our variables files. Kind of happy end.
+But is it right to do such tricks?&lt;/p&gt;
+
+&lt;p&gt;So, our pros:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It’s very effective on design time. You will never ever switch to that &lt;code&gt;Number&lt;/code&gt; tab on expression properties dialog.&lt;/li&gt;
+  &lt;li&gt;Your expression formats reside where they belongs. Alongside with your expressions, out of your user application, under your CVS umbrella in whatever format you keep your variables.&lt;/li&gt;
+  &lt;li&gt;You are not hampered in all sort of dynamic scenarios. Consider you have a dynamic chart expression, which shows either &lt;code&gt;Sales&lt;/code&gt; or &lt;code&gt;Margin percent&lt;/code&gt; or &lt;code&gt;Margin value&lt;/code&gt; based on user selection. It’s easier to have one chart expression with changing &lt;code&gt;Definition&lt;/code&gt;, &lt;code&gt;Label&lt;/code&gt; and &lt;code&gt;Comment&lt;/code&gt; then three chart expressions that conditionally hide or show. But it works only if all relevant properties of chart expression set by variables.&lt;/li&gt;
+  &lt;li&gt;That’s just feel as move in right direction, architecturally&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And cons:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We are relaying on undocumented feature, which looks almost like bug. Why on earth Num() formatting should be skipped, while Money() formatting should be respected in same procedure? What if QlikTech engineers will somehow fix Money() behavior so it would work only with format pattern that contain some currency symbol, or outright ban percent symbol in Money format pattern?&lt;/li&gt;
+  &lt;li&gt;As yet we’ve found just one case of different behavior of static and dynamic formatting. No one can give a guarantee that there are no more such cases.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Anyway, for now we decided to stick to dynamic formatting. If bug-like feature helps us deliver better applications, so be it.&lt;/p&gt;
+
+&lt;p&gt;Download &lt;a href=&quot;/downloads/send_to_excel_sample.qvw&quot;&gt;application used as example&lt;/a&gt;&lt;/p&gt;
+
+</content>
+ </entry>
+ 
+ 
+</feed>

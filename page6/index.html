@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+		
+      <title>inqlik.gitgub.io</title>
+		
+    <link rel="stylesheet" href="/stylesheets/screen.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/stylesheets/syntax.css" type="text/css" media="all" />
+    <link rel="alternate" title="inqlik.gitgub.io" type="application/atom+xml" href="/atom.xml" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+		<link href='http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css' /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Viewport" content="maximum-scale=1.8,width=720" />
+    <link rel="stylesheet" href="/stylesheets/qlikview.css">
+    <script src="/stylesheets/highlight.pack.js"></script>
+    <script>
+     hljs.configure({tabReplace: '    '});
+      hljs.initHighlightingOnLoad();
+    </script>
+    <link href='http://inqlik.github.io/feed.xml' rel='alternate' type='application/atom+xml'>
+  </head>
+ 
+  <body>
+	
+    <div id="header">
+    	<h1>
+    		<a href="/" title="inqlik.gitgub.io">Inqlik blog</a>
+    	</h1>
+    </div>
+    <div id="navigation">
+    	<ul>
+    		<li><a href="/" title="Blog">Blog</a>&bull;</li> 
+    		<li><a href="/archive/" title="Archive of this Blog">Archive</a>&bull;</li>
+        <li><a href="/osp/" title="Open Source projects">Open Source</a>&bull;</li> 
+    		<li><a href="/about/" title="About this Blog">About</a></li>
+    	</ul>
+    </div>			
+
+    <div class="clear_both"></div>
+
+		
+
+  <h2><a href="/2014/01/dynamic-number-formatting-in-chart-expressions/" title="[Permalink] Dynamic number formatting in chart expressions. Pros and cons">Dynamic number formatting in chart expressions. Pros and cons</a></h2>
+	<div class="post_date">25 January 2014</div>
+ 
+  <p>First of all - a definition. QlikView charts properties dialog has a <code>Number</code> tab where we are setting formats for each expression manually. That I will name static number formatting in this post.</p>
+
+<p>Whole bunch of various controls together are helping user to set proper value to property <code>Format Pattern</code>. Importantly - <code>Format Pattern</code> can not be set by variable expression. So you can set <code>Background Color</code> or <code>Text Format</code> of chart expression by variable expression but not <code>Format Pattern</code>.</p>
+
+<p>It’s rather not obvious why that should be so, and apparently not only for me - because I found such <a href="http://community.qlikview.com/ideas/1364">Idea</a> </p>
+
+<blockquote>
+  <h4 id="allow-format-pattern-to-use-an-expression">Allow “Format Pattern” to use an expression</h4>
+  <p>In many places you can use expressions to dynamically control QlikView. This should also be one of them.Especially when it comes to enterprise deployments with employees in multiple countries/cultures collaborating in one QV application a dynamic display is needed.Please email me for a detailed problem description / documentation if needed.</p>
+</blockquote>
+
+<p>Which got answer from QlikTech engineer: </p>
+
+<blockquote>
+  <blockquote>
+    <p>Works as designed. The idea is good. The reality is from we do not want to permit expressions to be evaluated at such a low level.</p>
+  </blockquote>
+</blockquote>
+
+<p>Well, it still looks as a rather cryptic answer for me, but this issue is four year old and nothing tells something would move on it in foreseeable future.</p>
+
+<p>So another approach would be to format expressions in-place. For example you have expression for Sales</p>
+
+<pre><code>Sum(Sales)
+</code></pre>
+
+<p>On <code>Number</code> tab your <code>Number Format Settings</code> set to default value - <code>Expression default</code>. You pre-formate your expression with (for example) </p>
+
+<pre><code>Money(Sum(Sales),'$# ##0,00;-$# ##0,00')
+</code></pre>
+
+<p>That is what I will call dynamic formatting in chart expression. At first glance such technic is even better than using separate expression variable with <code>Format Pattern</code>. After all we do not have to manage additional variable. That approach can easily handle even more dynamic scenarios. For example, if we have to change format accordingly to selection made in field <code>Country</code>, we could add variable <code>vMoneyFormat</code> which dependent from that selection and change our expression for <code>Sales</code> to</p>
+
+<pre><code>Money(Sum(Sales),$(vMoneyFormat))
+</code></pre>
+
+<p>We started to use dynamic formatting recently and for us it is real improvement.
+But there is time for cons in that story.</p>
+
+<p>Our new Num() formatted expressions looked and acted in application as equals to old statically formatted ones. But in one respect they were unequal. <code>Send to Excel</code> function respected static formatting but totally disregarded dynamic formatting.</p>
+
+<p>Cell value 12.34% became 0.123398723123. Not good.</p>
+
+<p>We did our Google search on that problem and results where not so optimistic. Apparently behavior of dynamically formatted expressions on <code>Send to Excel</code> changes constantly. In the midst of year 2012 in QV11 expressions formatted by Num() function were <a href="http://community.qlikview.com/thread/53189">converted to Text</a> by the way to Excel, There was <a href="https://eu1.salesforce.com/articles/Basic/How-to-export-data-to-excel-as-number-in-version-11">some way</a> to keep it in numbers, but otherwise unformatted. Now in QV11 SR4/5 that is default behavior out of the box - in Excel values arrive as unformatted numbers. </p>
+
+<p>Almost by accident we’ve found that formatting by Money() function is respected by <code>Send to Excel</code> as opposed to Num(). We did not use Money() much before as our usual set of number formats are Integer, Fixed to two decimals and Percent. Percent format pattern particularly did not look as good candidate to use in Money function but unexpectedly it worked. So strange expression formatter like</p>
+
+<pre><code>Money($(vCurrentMonthSales)/$(vPreviousMonthSales),'# ##0,00%')
+</code></pre>
+
+<p>works good both in application and after <code>Send to Excel</code>. Checked on QV11 SR4 and SR5.</p>
+
+<p>Look at example chart with some expression</p>
+
+<p><img src="/images/dynamic_formatting_qv.png" alt="Dynamic formatting in QlikView" /></p>
+
+<p>and how it looks in Excel</p>
+
+<p><img src="/images/dynamic_formatting_excel.png" alt="Sent to Excel" /></p>
+
+<p>So for now we search/replaced all Num() to Money() in our variables files. Kind of happy end.
+But is it right to do such tricks?</p>
+
+<p>So, our pros:</p>
+
+<ul>
+  <li>It’s very effective on design time. You will never ever switch to that <code>Number</code> tab on expression properties dialog.</li>
+  <li>Your expression formats reside where they belongs. Alongside with your expressions, out of your user application, under your CVS umbrella in whatever format you keep your variables.</li>
+  <li>You are not hampered in all sort of dynamic scenarios. Consider you have a dynamic chart expression, which shows either <code>Sales</code> or <code>Margin percent</code> or <code>Margin value</code> based on user selection. It’s easier to have one chart expression with changing <code>Definition</code>, <code>Label</code> and <code>Comment</code> then three chart expressions that conditionally hide or show. But it works only if all relevant properties of chart expression set by variables.</li>
+  <li>That’s just feel as move in right direction, architecturally</li>
+</ul>
+
+<p>And cons:</p>
+
+<ul>
+  <li>We are relaying on undocumented feature, which looks almost like bug. Why on earth Num() formatting should be skipped, while Money() formatting should be respected in same procedure? What if QlikTech engineers will somehow fix Money() behavior so it would work only with format pattern that contain some currency symbol, or outright ban percent symbol in Money format pattern?</li>
+  <li>As yet we’ve found just one case of different behavior of static and dynamic formatting. No one can give a guarantee that there are no more such cases.</li>
+</ul>
+
+<p>Anyway, for now we decided to stick to dynamic formatting. If bug-like feature helps us deliver better applications, so be it.</p>
+
+<p>Download <a href="/downloads/send_to_excel_sample.qvw">application used as example</a></p>
+
+
+
+	<div class="comments">
+		<a href="/2014/01/dynamic-number-formatting-in-chart-expressions/#disqus_thread" title="Show comments">Comments</a>
+	</div>
+ 
+  
+
+ 
+<div class="paginator">
+  
+  <div class="left_column">
+    
+		&nbsp;
+  </div>
+  
+  <form action="http://www.google.com/search" id="search" method="get" class="search_column">
+  <fieldset>
+    <input class="text" name="q" type="text" />
+    <input name="sitesearch" type="hidden" value="inqlik.gitgub.io" />
+    <input class="button" type="submit" value="Search" />
+  </fieldset>
+</form>
+  
+  <div class="right_column">
+    
+      <a href="
+        
+          /page5
+        " title="Newer entries">newer entries &raquo;</a>
+    
+		&nbsp;
+  </div>
+ 
+  <div class="clear_both">
+  </div>
+ 
+</div>
+		
+    <div id="footer">
+      Powered by <a href="http://github.com/mojombo/jekyll" title="Jekyll Site Generator">Jekyll</a> &amp; <a href="http://disqus.com/" title="Disqus Commenting System">Disqus</a>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-47706781-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </div>
+ 
+		<script type="text/javascript">
+		    var disqus_shortname = 'inqlik';
+
+		    (function () {
+		        var s = document.createElement('script'); s.async = true;
+		        s.type = 'text/javascript';
+		        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+		        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+		    }());
+		</script>
+		
+  </body>
+</html>
