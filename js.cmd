@@ -1,1 +1,1 @@
-bundle exec jekyll serve --trace --watch
+bundle exec jekyll serve --trace
