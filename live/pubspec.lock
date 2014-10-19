@@ -26,6 +26,8 @@ packages:
     source: hosted
     version: "1.2.2"
   qv_exp:
-    description: qv_exp
-    source: hosted
-    version: "0.1.3"
+    description:
+      path: "c:\\Projects\\qv_exp"
+      relative: false
+    source: path
+    version: "0.1.4"
