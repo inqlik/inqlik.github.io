@@ -1,0 +1,18 @@
+<div id="header_menu" class="clearfix" {% if site.tpl.headmenu == 'hide' %}style="display:none"{% endif %}>
+    <ul class="spaced_pages" data-parent-id="{{ site.menu.id }}">
+        <!-- Выводим ссылку на главную страницу -->
+        <li {% if site.menu.id == page.id %}class="current_page_item"{% endif %} data-id="{{ site.menu.id }}" data-is-main="true"><a href="{{ site.menu.url }}">{{ site.menu.name}}</a></li>
+        <!-- Выводим основное меню -->
+        {% for menu in site.menu.items %}
+            <li {% if menu.selected %}class="current_page_item"{% endif %} data-id="{{ menu.id }}"><a href="{{ menu.url }}">{{ menu.name}}</a>
+            {% if menu.items %}
+                <ul data-parent-id="{{ site.menu.id }}">
+                    {% for menu in menu.items %}
+                        <li data-id="{{ menu.id }}"><a href="{{ menu.url }}">{{ menu.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}  
+            </li>
+        {% endfor %}
+    </ul>                   
+</div>

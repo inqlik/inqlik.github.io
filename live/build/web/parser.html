@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Online syntax checker for QlikView chart expressions</title>
+    
+    <script async type="application/dart" src="parser.dart"></script>
+    <script async src="packages/browser/dart.js"></script>
+    
+    <link rel="stylesheet" href="parser.css">
+    <link rel="stylesheet" href="qlikview.css">
+    <script src="highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <h1>Online syntax checker for QlikView chart expressions</h1>
+    <textarea id="formula_text" rows="4" cols="120" placeholder="Enter chart expression here"></textarea>
+    <br>
+    <pre id="code_block"><code id="highlighted" class="qve"></code></pre>
+    <br>
+    <button id="parse_expression">Check syntax</button>
+    <h3>Result pane:</h3>
+    <div id="expression_with_mark"></div>
+    <br>
+    <div id="result">Press button `Check syntax`</div>
+    <br>
+    <hr>
+    <l>
+      <li>Expressions can contain set analysis expression</li>
+      <li>Dollar sign expansions are not supported</li>
+      <li>See <a href="http://inqlik.github.io/2014/10/online-syntax-chek-tool-for-qlikview-expressions/">blog post</a> for some explanations </li>
+      <li><a href="qvs.html">Online syntax checker for QlikView load scripts</a></li>    
+    
+    </l>
+  </body>
+</html>

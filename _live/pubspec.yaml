@@ -1,0 +1,8 @@
+name: parser
+description: A sample web application
+dependencies:
+  browser: any
+  qv_exp:
+    path: c:\Projects\qv_exp
+  qvs:
+    path: c:\Projects\qvs
