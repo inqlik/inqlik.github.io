@@ -1,5 +1,0 @@
-Sitemap: http://inqlik.gitgub.io/sitemap.xml
- 
-User-agent: *
-Disallow: /images/
-Disallow: /imprint/
