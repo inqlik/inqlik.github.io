@@ -28,7 +28,6 @@ void parseExpression(MouseEvent event) {
   sourceInput.style.display = 'none';
   querySelector("#edit").style.display = 'inline';
   querySelector("#parse").style.display = 'none';
-  QvsReader reader = new QvsReader(new ReaderData());
   var lines = sourceText.split("\n");
   var codeContainer = querySelector("#code_area_id") as DivElement;
   codeContainer.children.clear();
@@ -43,7 +42,7 @@ void parseExpression(MouseEvent event) {
     codeContainer.append(preTag);
   }
   codeContainer.style.removeProperty('display');
-  reader.readLines(lines);
+  QvsReader reader = readQvs('web_test.qvs',sourceText);
   var resultSummary = 'Script parsed sucessfully';
   if (reader.errors.isNotEmpty) {
     TableSectionElement table = querySelector("#errors") as TableSectionElement;
