@@ -14,18 +14,18 @@ We use it to analyze data in intermediary and Ready-For-Mart QVD files in our pr
 Basically QVD explorer consist of two parts:
 
 - QlikView application template with dynamic data exploration functionality. Application provides dynamic selection of dimensions, measures, filters based on data loaded in concrete application. 
-- Scripts that provide `Send to QvdExplorer` menu item in windows explorer context menu. When user select one or several QVD files and choose `Send to QvdExplorer` command script create new application based on template, generate load script that load all selected QVD files into the application and reload data.
+- Scripts that provide `Send to \ QvdExplorer` menu item in windows explorer context menu. When user select one or several QVD files and choose `Send to \ QvdExplorer` command script create new application based on template, generate load script that load all selected QVD files into the application and reload data.
 
 We found that application very useful in our daily work so I would like to share it with community.
 
 ###Some features:
 
 - You can freely modify application template to adapt for your taste and needs.
-- You can modify concrete application (application with data loaded from QVDS) to add specific behavior to adapt application for concrete analytic scenario. If you select same set of QVD files in windows explorer and perform `Send to QvdExplorer` again same QlikViedw application would be used to reload new data. You would not lose your modification so you can repeatedly analyze updated dataset.
+- You can modify concrete application (application with data loaded from QVDS) to add specific behavior to adapt application for concrete analytic scenario. If you select same set of QVD files in windows explorer and perform `Send to \ QvdExplorer` again same QlikViedw application would be used to reload new data. You would not lose your modification so you can repeatedly analyze updated dataset.
 
 ###Caveats
 
-- While resulting QlikView applications are well suited for some analytical tasks, they can guzzle all memory out of your system if you accidentally choose to show couple of million rows in straight chart. You should select right filters and/or right set of dimensions when you are dealing with very big datasets.   
+- While resulting QlikView applications are well suited for some analytic tasks, they can easily guzzle all memory out of your system if you accidentally choose to show couple of million rows in straight chart. You should select right filters and/or right set of dimensions when you are dealing with very big datasets.   
 
 
 ###Installation
@@ -35,12 +35,12 @@ We found that application very useful in our daily work so I would like to share
 
 ###Usage
 
-Select one or several QVD files in Windows Explorer then select "Send to" item in Windows context menu. 
+Select one or several QVD files in Windows Explorer then select `Send to \ QvdExplorer` item in Windows context menu. 
 
 <img src="http://inqlik.github.io/images/send-to-qvdexplorer.png" alt="Image 1" width="700">
 
 
-"Sent to" operation will trigger several events
+`Send to \ QvdExplorer` operation will trigger several events
 
 - New qvw application with long unique name that included path to selected QVD files will be created in `Data` subdirectory under your QvdExplorer directory
 - New QlikView load script for loading all selected QVD files into that application will be created alongside with that qvw application
