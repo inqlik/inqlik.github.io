@@ -1,36 +1,68 @@
 --- 
 layout: simple
-title: "Online tool to check syntax of QlikView expressions"
----
-Online tool to check syntax of QlikView expressions
+title: "InQlik QVD Explorer"
 ---
 
-TL;DR: Check our [on-line parser for QlikView expressions](/live/build/web/parser.html)
+InQlik QVD Explorer
+--------------------
+
+*TL;DR:* Check out our [QvdExplorer](https://github.com/inqlik/QvdExplorer) - simple but powerful tool to explore data in your QVD files
 
 ----
 
-Currently in spare time I'm trying to add command line syntax check tool for qlikview chart expressions to ours team tool-box. We already use internally similar command line parser for qlikview load scripts. It definitely should be improved in future but already now (integrated in Sublime Text as Build system for qvs script) it provide some help in developing process. It is developed in dart programming language with sources available at [github repository](https://github.com/inqlik/qvs) for all interested in that kind of stuff. For the moment it completely lacks of documentation apart from set of unit-test and generally I think is ready only for our own internal usage.
+In that post I want to introduce simple tool that our team internally use quite some time. 
+We use it to analyze data in intermediary and Ready-For-Mart QVD files in our projects.
 
-So I thought - why not make comparable tool for checking our qlikview expression files? (in our projects all qlikview expressions are stored in text files, same as load scripts).
-Admittedly such a tool would require addition of sub-parser for Set analysis expressions but that should not be overwhelming task giving now I have some experience with other parsers (Actually that step is done now) 
+Basically QVD explorer consist of two parts:
 
-Well, it proved to be difficult to get from working parser for individual qlikview expression to useful tool for analyzing real code-base of expressions. You should decide what to do with all sorts of dollar sign expansions within expressions for example. Or how to deal with variables that are not valid expressions and rather some arbitrary chunks of code only used through variable expansion in other expressions. And some automatic procedure for getting metadata from end-user application would be nice too. Tool may then check each terminal identifier in expression against list of loaded fields in application. And so on. 
+- QlikView application template with dynamic data exploration functionality. Application provides dynamic selection of dimensions, measures, filters based on data loaded in concrete application. 
+- Scripts that provide `Send to QvdExplorer` menu item in windows explorer context menu. When user select one or several QVD files and choose `Send to QvdExplorer` command script create new application based on template, generate load script that load all selected QVD files into the application and reload data.
 
-So for now that tool is not ready even for internal usage, but I believe it eventually would develop into something useful.
+We found that application very useful in our daily work so I would like to share it with community.
 
-Meantime I've decided to take advantage of dual nature of dart language which works both in command line scripts and (compiled to javascript) at web pages. I can take a expression parser from the package and use it in simple web application. 
+###Some features:
 
-Go [here](/live/build/web/parser.html) to see how it works.
+- You can freely modify application template to adapt for your taste and needs.
+- You can modify concrete application (application with data loaded from QVDS) to add specific behavior to adapt application for concrete analytic scenario. If you select same set of QVD files in windows explorer and perform `Send to QvdExplorer` again same QlikViedw application would be used to reload new data. You would not lose your modification so you can repeatedly analyze updated dataset.
 
-Some additional considerations:
+###Caveats
 
-- That page works totally on the client side, parser and so on compiled to javascript.
-- Page uses the excellent [QlikView Web Syntax Highlighter](http://www.qlikviewaddict.com/p/qlikview-web-highlight.html) to highlight expression syntax. (Actually it similar to how actual tool would be used at development. Sublime Text will provide syntax highlighting and qlikview expression parser would be used for syntax checking)
-- Expressions can contain set analysis expression.
-- Dollar sign expansions are not supported.
-- Apart from dollar sign expansion on-line syntax checker should not give false negative results for expressions of any complexity. If you entered valid expression and checker report error in it, please [add an issue](https://github.com/inqlik/qv_exp/issues) at repository or leave a comment here.
-- QlikView expression parser itself is at [its own repository](https://github.com/inqlik/qv_exp)
-- Source code for web application is at [inqlik blog repository](https://github.com/inqlik/inqlik.github.io/tree/master/live/web) 
-- Application itself is basically minimally adapted dart web hello world sample
+- While resulting QlikView applications are well suited for some analytical tasks, they can guzzle all memory out of your system if you accidentally choose to show couple of million rows in straight chart. You should select right filters and/or right set of dimensions when you are dealing with very big datasets.   
 
-[Link to original post](http://inqlik.github.io/2014/08/emulating-cyclic-dimension-group-in-qlik-sense/)
+
+###Installation
+
+- Clone project or just download [repository archive](https://github.com/inqlik/QvdExplorer/archive/master.zip) and copy extract directory `QvdExplorer-master` from that archive anywhere in your system (you may rename that directory to `QvdExplorer` for example). Probably path to `QvdExplorer` directory should not contain non-ascii symbols and spaces. 
+- Run `setup.bat` (you can do it just double clicking that batch file in the file explorer). That operation will install new target `QvdExplorer` to `Send to` context menu in file explorer.
+
+###Usage
+
+Select one or several QVD files in Windows Explorer then select "Send to" item in Windows context menu. 
+
+<img src="http://inqlik.github.io/images/send-to-qvdexplorer.png" alt="Image 1" width="700">
+
+
+"Sent to" operation will trigger several events
+
+- New qvw application with long unique name that included path to selected QVD files will be created in `Data` subdirectory under your QvdExplorer directory
+- New QlikView load script for loading all selected QVD files into that application will be created alongside with that qvw application
+- Qvw application will reload data
+- Qvw application will be opened in QlikView Desktop
+
+Newly opened qvd application may look like this:
+
+
+<img src="http://inqlik.github.io/images/qvdexplorer-newly-opened.png" alt="Image 2" width="700">
+
+
+
+In Dynamic filter area, you can choose a field from the list of fields available in the application and then select values to filter in the adjacent list.
+
+
+Straight table with data to explore originally is hidden. To show it you should select one or more dimensions in Dimension selection area. Optionally you can add up to 5 measures to table by choosing a field from the list of available fields and aggregation function from the correspondig list.
+
+Example of QvdExplorer application for sample dataset with some `EmployeeId`'s filtered, with selected dimensions `SupplierId` and `ProductName` and measures added to show sum of `Quantity` and number of transactions by selected dimensions
+
+<img src="http://inqlik.github.io/images/qvdexplorer.png" alt="Image 3" width="700">
+
+
