@@ -1,6 +1,8 @@
 --- 
 layout: post
 title: "Dynamic number formatting in chart expressions. Pros and cons"
+redirect_to:
+  - http://blog.infovizion.ru/2014/01/dynamic-number-formatting-in-chart-expressions.-pros-and-cons/
 time: '23:12'
 ---
 

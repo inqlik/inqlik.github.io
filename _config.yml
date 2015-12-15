@@ -10,6 +10,8 @@ paginate: 1
 name: InQlik blog
 description: Blog about various aspects of QlikView development process 
 url: http://inqlik.github.io/
+gems:
+  - jekyll-redirect-from
 maruku:
   use_tex:    false
   use_divs:   false
