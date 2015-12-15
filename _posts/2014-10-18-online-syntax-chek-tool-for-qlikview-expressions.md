@@ -2,6 +2,8 @@
 layout: post
 title: "Online tool to check syntax of QlikView expressions"
 time: '23:12'
+redirect_to:
+  - http://blog.infovizion.ru/2014/10/online-tool-to-check-syntax-of-qlikview-expressions/
 ---
 
 TL;DR: Check our [on-line parser for QlikView expressions](/live/build/web/parser.html)

@@ -2,6 +2,8 @@
 layout: post
 title: "Emulating cyclic dimension group in Qlik Sense"
 time: '23:12'
+redirect_to:
+  - http://blog.infovizion.ru/2014/06/emulating-cyclic-dimension-group-in-qlik-sense/
 ---
 
 Current version of Qlik Sense Desktop do not support cyclic dimension groups (drilldown groups are supported).  

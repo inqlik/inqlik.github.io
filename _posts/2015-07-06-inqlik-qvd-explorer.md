@@ -2,6 +2,8 @@
 layout: post
 title: "InQlik QVD Explorer"
 time: '23:12'
+redirect_to:
+  - http://blog.infovizion.ru/2015/07/infovizion-qvd-explorer/
 ---
 
 *TL;DR:* Check out our [QvdExplorer](https://github.com/inqlik/QvdExplorer) - simple but powerful tool to explore data in your QVD files

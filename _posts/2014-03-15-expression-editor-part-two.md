@@ -2,6 +2,8 @@
 layout: post
 title: "InQlik Expression Editor, part two"
 time: '23:12'
+redirect_to:
+  - http://blog.infovizion.ru/2014/03/infovizion-expression-editor-part-two/
 ---
 
 After writing previous post I have [very interesting discussion][disc] with [Jason Michaelides][jason].

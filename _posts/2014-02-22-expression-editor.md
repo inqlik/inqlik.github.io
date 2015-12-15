@@ -2,6 +2,8 @@
 layout: post
 title: "InQlik Expression Editor in QlikView Deployment Framework environment"
 time: '23:12'
+redirect_to:
+  - http://blog.infovizion.ru/2014/02/infovizion-expression-editor-in-qlikview-deployment-framework-environment/
 ---
 We've switched to QlikView Deployment Framework recently so adjusting our current toolset to new environment was a great opportunity to rethink some approaches and implement some properties in alternative way. In this post I'd like to present some background design considerations and current state of one of these tools - Expression Editor. 
 

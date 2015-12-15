@@ -3,6 +3,8 @@ layout: post
 title: "Sample of QlikView automation by external VBScript scripts
 "
 time: '23:12'
+redirect_to:
+  - http://blog.infovizion.ru/2014/07/sample-of-qlikview-automation-by-external-vbscript-scripts/
 ---
 
 You can do all sorts of administrative tasks with QlikView applications through Automation API.
